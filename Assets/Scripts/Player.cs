@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [Header("Game elements")]
-    Inputs inputs;
+    InputManager inputScript;
 
     [Header("Box properties")]
     public Vector2 topBoxPos;
@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
     public int maxColliders = 1;
 
     [Header("Player properties")]
-    float speed = 0.5f;
+    float speed = 1;
 
     public bool topWalled;
     public bool leftWalled;
@@ -46,13 +46,14 @@ public class Player : MonoBehaviour
 
 	void Start ()
     {
-        inputs = GameObject.FindGameObjectWithTag("Input").GetComponent<Inputs>();
+        inputScript = GameObject.FindGameObjectWithTag("Input").GetComponent<InputManager>();
         IdleState();
 	}
 
     void FixedUpdate()
     {
         ResetState();
+        TopWallDetection();
         LeftWallDetection();
         BottomWallDetection();
         RightWallDetection();
@@ -89,7 +90,7 @@ public class Player : MonoBehaviour
 
     void Idle()
     {
-        if(inputs.PressingUp || inputs.PressingLeft || inputs.PressingDown || inputs.PressingRight)
+        if(inputScript.PressingUp || inputScript.PressingLeft || inputScript.PressingDown || inputScript.PressingRight)
         {
             MoveState();
         }
@@ -99,7 +100,7 @@ public class Player : MonoBehaviour
     {
         if(!snailingInWall)
         {
-            if(inputs.PressingLeft && !leftWalled)
+            if(inputScript.PressingLeft && !leftWalled)
             {
                 Vector3 provisionalPos = this.transform.position;
 
@@ -107,12 +108,12 @@ public class Player : MonoBehaviour
 
                 this.gameObject.transform.position = provisionalPos;
             }
-            else if(inputs.PressingLeft && leftWalled)
+            else if(inputScript.PressingLeft && leftWalled)
             {
                 snailingInWall = true;
             }
 
-            if(inputs.PressingRight && !rightWalled)
+            if(inputScript.PressingRight && !rightWalled)
             {
                 Vector3 provisionalPos = this.transform.position;
 
@@ -120,7 +121,7 @@ public class Player : MonoBehaviour
 
                 this.gameObject.transform.position = provisionalPos;
             }
-            else if(inputs.PressingRight && rightWalled)
+            else if(inputScript.PressingRight && rightWalled)
             {
                 snailingInWall = true;
             }
@@ -128,7 +129,7 @@ public class Player : MonoBehaviour
 
         if(snailingInWall)
         {
-            if(inputs.PressingUp && !topWalled)
+            if(inputScript.PressingUp && !topWalled)
             {
                 Vector3 provisionalPos = this.transform.position;
 
@@ -137,7 +138,7 @@ public class Player : MonoBehaviour
                 this.gameObject.transform.position = provisionalPos;
             }
 
-            if(inputs.PressingDown && !bottomWalled)
+            if(inputScript.PressingDown && !bottomWalled)
             {
                 Vector3 provisionalPos = this.transform.position;
 
@@ -145,7 +146,7 @@ public class Player : MonoBehaviour
 
                 this.gameObject.transform.position = provisionalPos;
             }
-            else if(inputs.PressingDown && bottomWalled)
+            else if(inputScript.PressingDown && bottomWalled)
             {
                 snailingInWall = false;
             }
@@ -174,7 +175,7 @@ public class Player : MonoBehaviour
 
     #endregion
 
-    #region DETECTION METHODS
+    #region WALL DETECTION METHODS
 
     void ResetState()
     {
