@@ -9,27 +9,35 @@ public class Player : MonoBehaviour
     public GameObject puke;
     Rigidbody2D rb;
 
-    [Header("Box properties")]
-    public Vector2 topBoxPos;
-    public Vector2 topBoxSize;
-    public Vector2 leftBoxPos;
-    public Vector2 leftBoxSize;
-    public Vector2 bottomBoxPos;
-    public Vector2 bottomBoxSize;
-    public Vector2 rightBoxPos;
-    public Vector2 rightBoxSize;
-
-    [Header("Filter")]
-    public ContactFilter2D filter;
-    public int maxColliders = 1;
+    [Header("Ground detection")]
+    public Vector2 topOrigin;
+    public float topDistance;
+    public Vector2 leftUpOrigin;
+    public Vector2 leftDownOrigin;
+    public float leftDistance;
+    public Vector2 bottomUpOrigin;
+    public Vector2 bottomDownOrigin;
+    public float bottomDistance;
+    public Vector2 rightUpOrigin;
+    public Vector2 rightDownOrigin;
+    public float rightDistance;
+    RaycastHit2D[] rayHit = new RaycastHit2D[1];
+    int numHits;
+    public ContactFilter2D contactfilter;
 
     [Header("Player properties")]
     float speed = 1;
+    public float pukeCharge;
+
     public bool topWalled;
-    public bool leftWalled;
-    public bool rightWalled;
-    public bool bottomWalled;
-    public bool snailingInWall;
+    public bool leftUpWalled;
+    public bool leftDownWalled;
+    public bool rightUpWalled;
+    public bool rightDownWalled;
+    public bool bottomUpWalled;
+    public bool bottomDownWalled;
+    public bool snailingInLeftWall;
+    public bool snailingInRightWall;
 
     PlayerState currentPlayerState;
     enum PlayerState
@@ -51,7 +59,6 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        ResetState();
         TopWallDetection();
         LeftWallDetection();
         BottomWallDetection();
@@ -97,9 +104,9 @@ public class Player : MonoBehaviour
 
     void Move()
     {
-        if(!snailingInWall)
+        if(!snailingInLeftWall && !snailingInRightWall)
         {
-            if(inputScript.PressingLeft && !leftWalled)
+            if(inputScript.PressingLeft && !leftUpWalled)
             {
                 Vector3 provisionalPos = this.transform.position;
 
@@ -107,13 +114,13 @@ public class Player : MonoBehaviour
 
                 this.gameObject.transform.position = provisionalPos;
             }
-            else if(inputScript.PressingLeft && leftWalled)
+            else if(inputScript.PressingLeft && leftUpWalled)
             {
-                snailingInWall = true;
+                snailingInLeftWall = true;
                 rb.gravityScale = 0;
             }
 
-            if(inputScript.PressingRight && !rightWalled)
+            if(inputScript.PressingRight && !rightUpWalled)
             {
                 Vector3 provisionalPos = this.transform.position;
 
@@ -121,14 +128,14 @@ public class Player : MonoBehaviour
 
                 this.gameObject.transform.position = provisionalPos;
             }
-            else if(inputScript.PressingRight && rightWalled)
+            else if(inputScript.PressingRight && rightUpWalled)
             {
-                snailingInWall = true;
+                snailingInLeftWall = true;
                 rb.gravityScale = 0;
             }
         }
 
-        if(snailingInWall)
+        if(snailingInLeftWall || snailingInRightWall)
         {
             if(inputScript.PressingUp && !topWalled)
             {
@@ -139,7 +146,7 @@ public class Player : MonoBehaviour
                 this.gameObject.transform.position = provisionalPos;
             }
 
-            if(inputScript.PressingDown && !bottomWalled)
+            if(inputScript.PressingDown && !bottomDownWalled)
             {
                 Vector3 provisionalPos = this.transform.position;
 
@@ -147,9 +154,10 @@ public class Player : MonoBehaviour
 
                 this.gameObject.transform.position = provisionalPos;
             }
-            else if(inputScript.PressingDown && bottomWalled)
+            else if(inputScript.PressingDown && bottomDownWalled)
             {
-                snailingInWall = false;
+                snailingInLeftWall = false;
+                snailingInRightWall = false;
                 rb.gravityScale = 1;
             }
         }
@@ -157,8 +165,17 @@ public class Player : MonoBehaviour
 
     void Spit()
     {
-        Instantiate(puke, new Vector3(this.transform.position.x + 0.5f, this.transform.position.y + 0.8f, 0), new Quaternion(0, 0, 0, 0));
-        IdleState();
+        pukeCharge += Time.deltaTime * 20;
+
+        if(pukeCharge >= 20) pukeCharge = 20;
+
+        if(Input.GetMouseButtonUp(0))
+        {
+            puke.GetComponent<Puke>().speed = pukeCharge;
+            Instantiate(puke, new Vector3(this.transform.position.x + 0.5f, this.transform.position.y + 0.8f, 0), new Quaternion(0, 0, 0, 0));
+            pukeCharge = 0;
+            IdleState();
+        }
     }
 
     void Drink()
@@ -180,52 +197,77 @@ public class Player : MonoBehaviour
 
     #region WALL DETECTION METHODS
 
-    void ResetState()
-    {
-        topWalled = false;
-        leftWalled = false;
-        bottomWalled = false;
-        rightWalled = false;
-    }
-
     void TopWallDetection()
     {
-        Vector3 pos = this.transform.position + (Vector3)topBoxPos;
-        Collider2D[] results = new Collider2D[maxColliders];
+        topWalled = false;
 
-        int numColliders = Physics2D.OverlapBox(pos, topBoxSize, 0, filter, results);
+        numHits = Physics2D.Raycast(new Vector2(this.transform.position.x + topOrigin.x, this.transform.position.y + topOrigin.y), new Vector2(0, 1), contactfilter, rayHit, topDistance);
 
-        if(numColliders > 0) topWalled = true;
+        if(numHits > 0)
+        {
+            topWalled = true;
+        }        
     }
 
     void LeftWallDetection()
     {
-        Vector3 pos = this.transform.position + (Vector3)leftBoxPos;
-        Collider2D[] results = new Collider2D[maxColliders];
+        leftUpWalled = false;
+        leftDownWalled = false;
 
-        int numColliders = Physics2D.OverlapBox(pos, leftBoxSize, 0, filter, results);
+        numHits = Physics2D.Raycast(new Vector2(this.transform.position.x + leftUpOrigin.x, this.transform.position.y + leftUpOrigin.y), new Vector2(0, 1), contactfilter, rayHit, leftDistance);
 
-        if(numColliders > 0) leftWalled = true;
+        if(numHits > 0)
+        {
+            leftUpWalled = true;
+        }
+
+        numHits = Physics2D.Raycast(new Vector2(this.transform.position.x + leftDownOrigin.x, this.transform.position.y + leftDownOrigin.y), new Vector2(0, 1), contactfilter, rayHit, leftDistance);
+
+        if(numHits > 0)
+        {
+            leftDownWalled = true;
+        }
     }
 
     void BottomWallDetection()
     {
-        Vector3 pos = this.transform.position + (Vector3)bottomBoxPos;
-        Collider2D[] results = new Collider2D[maxColliders];
+        bottomUpWalled = false;
+        bottomDownWalled = false;
 
-        int numColliders = Physics2D.OverlapBox(pos, bottomBoxSize, 0, filter, results);
+        numHits = Physics2D.Raycast(new Vector2(this.transform.position.x + bottomUpOrigin.x, this.transform.position.y + bottomUpOrigin.y), new Vector2(0, -1), contactfilter, rayHit, bottomDistance);
+        
+        if(numHits > 0)
+        {
+            Debug.Log("bottomUpWalled");
+            bottomUpWalled = true;
+        }
 
-        if(numColliders > 0) bottomWalled = true;
+        numHits = Physics2D.Raycast(new Vector2(this.transform.position.x + bottomDownOrigin.x, this.transform.position.y + bottomDownOrigin.y), new Vector2(0, -1), contactfilter, rayHit, bottomDistance);
+
+        if(numHits > 0)
+        {
+            bottomDownWalled = true;
+        }
     }
 
     void RightWallDetection()
     {
-        Vector3 pos = this.transform.position + (Vector3)rightBoxPos;
-        Collider2D[] results = new Collider2D[maxColliders];
+        rightUpWalled = false;
+        rightDownWalled = false;
 
-        int numColliders = Physics2D.OverlapBox(pos, rightBoxSize, 0, filter, results);
+        numHits = Physics2D.Raycast(new Vector2(this.transform.position.x + rightUpOrigin.x, this.transform.position.y + rightUpOrigin.y), new Vector2(0, 1), contactfilter, rayHit, rightDistance);
 
-        if(numColliders > 0) rightWalled = true;
+        if(numHits > 0)
+        {
+            rightUpWalled = true;
+        }
+
+        numHits = Physics2D.Raycast(new Vector2(this.transform.position.x + rightDownOrigin.x, this.transform.position.y + rightDownOrigin.y), new Vector2(0, 1), contactfilter, rayHit, rightDistance);
+
+        if(numHits > 0)
+        {
+            rightDownWalled = true;
+        }
     }
 
     #endregion
@@ -264,23 +306,16 @@ public class Player : MonoBehaviour
 
     #endregion
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
-        Gizmos.color = Color.blue;
-        Vector3 pos1 = this.transform.position + (Vector3)topBoxPos;
-        Gizmos.DrawWireCube(pos1, topBoxSize);
-
         Gizmos.color = Color.red;
-        Vector3 pos = this.transform.position + (Vector3)leftBoxPos;
-        Gizmos.DrawWireCube(pos, leftBoxSize);
-
-        Gizmos.color = Color.yellow;
-        Vector3 pos4 = this.transform.position + (Vector3)bottomBoxPos;
-        Gizmos.DrawWireCube(pos4, bottomBoxSize);
-
-        Gizmos.color = Color.green;
-        Vector3 pos2 = this.transform.position + (Vector3)rightBoxPos;
-        Gizmos.DrawWireCube(pos2, rightBoxSize);
-        
+        Gizmos.DrawRay(new Vector2(this.transform.position.x + topOrigin.x, this.transform.position.y + topOrigin.y), new Vector2(0, topDistance));
+        Gizmos.DrawRay(new Vector2(this.transform.position.x + leftUpOrigin.x, this.transform.position.y + leftUpOrigin.y), new Vector2(-leftDistance, 0));
+        Gizmos.DrawRay(new Vector2(this.transform.position.x + leftDownOrigin.x, this.transform.position.y + leftDownOrigin.y), new Vector2(-leftDistance, 0));
+        Gizmos.DrawRay(new Vector2(this.transform.position.x + bottomUpOrigin.x, this.transform.position.y + bottomUpOrigin.y), new Vector2(0, -bottomDistance));
+        Gizmos.DrawRay(new Vector2(this.transform.position.x + bottomDownOrigin.x, this.transform.position.y + bottomDownOrigin.y), new Vector2(0, -bottomDistance));
+        Gizmos.DrawRay(new Vector2(this.transform.position.x + rightUpOrigin.x, this.transform.position.y + rightUpOrigin.y), new Vector2(rightDistance, 0));
+        Gizmos.DrawRay(new Vector2(this.transform.position.x + rightDownOrigin.x, this.transform.position.y + rightDownOrigin.y), new Vector2(rightDistance, 0));
     }
+
 }
