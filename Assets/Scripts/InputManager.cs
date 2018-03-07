@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
+    Player player;
     bool pressingUp;
     bool pressingLeft;
     bool pressingDown;
     bool pressingRight;
     bool spit;
+
+    void Start()
+    {
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+    }
 
 	void Update ()
     {
@@ -39,6 +45,11 @@ public class InputManager : MonoBehaviour
             pressingRight = true;
         }
         else pressingRight = false;
+
+        if(Input.GetMouseButtonDown(0))
+        {
+            player.SpitState();
+        }
     }
 
     public bool PressingUp { get { return pressingUp; } }

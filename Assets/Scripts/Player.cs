@@ -6,17 +6,16 @@ public class Player : MonoBehaviour
 {
     [Header("Game elements")]
     InputManager inputScript;
+    public GameObject puke;
+    Rigidbody2D rb;
 
     [Header("Box properties")]
     public Vector2 topBoxPos;
     public Vector2 topBoxSize;
-
     public Vector2 leftBoxPos;
     public Vector2 leftBoxSize;
-
     public Vector2 bottomBoxPos;
     public Vector2 bottomBoxSize;
-
     public Vector2 rightBoxPos;
     public Vector2 rightBoxSize;
 
@@ -26,7 +25,6 @@ public class Player : MonoBehaviour
 
     [Header("Player properties")]
     float speed = 1;
-
     public bool topWalled;
     public bool leftWalled;
     public bool rightWalled;
@@ -47,6 +45,7 @@ public class Player : MonoBehaviour
 	void Start ()
     {
         inputScript = GameObject.FindGameObjectWithTag("Input").GetComponent<InputManager>();
+        rb = GetComponent<Rigidbody2D>();
         IdleState();
 	}
 
@@ -111,6 +110,7 @@ public class Player : MonoBehaviour
             else if(inputScript.PressingLeft && leftWalled)
             {
                 snailingInWall = true;
+                rb.gravityScale = 0;
             }
 
             if(inputScript.PressingRight && !rightWalled)
@@ -124,6 +124,7 @@ public class Player : MonoBehaviour
             else if(inputScript.PressingRight && rightWalled)
             {
                 snailingInWall = true;
+                rb.gravityScale = 0;
             }
         }
 
@@ -149,13 +150,15 @@ public class Player : MonoBehaviour
             else if(inputScript.PressingDown && bottomWalled)
             {
                 snailingInWall = false;
+                rb.gravityScale = 1;
             }
         }
     }
 
     void Spit()
     {
-
+        Instantiate(puke, new Vector3(this.transform.position.x + 0.5f, this.transform.position.y + 0.8f, 0), new Quaternion(0, 0, 0, 0));
+        IdleState();
     }
 
     void Drink()
@@ -239,7 +242,7 @@ public class Player : MonoBehaviour
         currentPlayerState = PlayerState.Move;
     }
 
-    void SpitState()
+    public void SpitState()
     {
         currentPlayerState = PlayerState.Spit;
     }
