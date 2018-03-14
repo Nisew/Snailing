@@ -10,6 +10,7 @@ public class InputManager : MonoBehaviour
     bool pressingDown;
     bool pressingRight;
     bool spit;
+    bool pressingSpace;
 
     void Start()
     {
@@ -50,12 +51,22 @@ public class InputManager : MonoBehaviour
         {
             player.SpitState();
         }
+
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            pressingSpace = true;
+        }
+        if(Input.GetKeyUp(KeyCode.Space))
+        {
+            pressingSpace = false;
+        }
     }
 
     public bool PressingUp { get { return pressingUp; } }
     public bool PressingLeft { get { return pressingLeft; } }
     public bool PressingDown { get { return pressingDown; } }
     public bool PressingRight { get { return pressingRight; } }
+    public bool PressingSpace { get { return pressingSpace; } }
     public bool Spit { get { return spit; } }
 
 }

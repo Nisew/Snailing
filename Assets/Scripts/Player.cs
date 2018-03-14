@@ -12,22 +12,18 @@ public class Player : MonoBehaviour
     [Header("Ground detection")]
     public Vector2 topOrigin;
     public float topDistance;
+
     public Vector2 leftUpOrigin;
     public Vector2 leftDownOrigin;
     public float leftDistance;
+
     public Vector2 bottomUpOrigin;
     public Vector2 bottomDownOrigin;
     public float bottomDistance;
+
     public Vector2 rightUpOrigin;
     public Vector2 rightDownOrigin;
     public float rightDistance;
-    RaycastHit2D[] rayHit = new RaycastHit2D[1];
-    int numHits;
-    public ContactFilter2D contactfilter;
-
-    [Header("Player properties")]
-    float speed = 1;
-    public float pukeCharge;
 
     public bool topWalled;
     public bool leftUpWalled;
@@ -36,11 +32,26 @@ public class Player : MonoBehaviour
     public bool rightDownWalled;
     public bool bottomUpWalled;
     public bool bottomDownWalled;
+
     public bool snailingInLeftWall;
     public bool snailingInRightWall;
 
-    PlayerState currentPlayerState;
-    enum PlayerState
+    RaycastHit2D[] rayHit = new RaycastHit2D[1];
+    int numHits;
+    public ContactFilter2D contactfilter;
+
+    [Header("Player properties")]
+    float speed = 1;
+    public float pukeCharge;
+
+    Vector2 goingToPos;
+    bool goingUpLeft;
+    bool goingDownLeft;
+    bool goingUpRight;
+    bool goingDownRight;
+
+    public PlayerState currentPlayerState;
+    public enum PlayerState
     {
         Idle,
         Move,
@@ -104,51 +115,73 @@ public class Player : MonoBehaviour
 
     void Move()
     {
-        if(!snailingInLeftWall && !snailingInRightWall)
+        if(!snailingInLeftWall && !snailingInRightWall && (bottomUpWalled || bottomDownWalled))
         {
-            if(inputScript.PressingLeft && !leftUpWalled)
+            if(inputScript.PressingLeft && !leftUpWalled && bottomUpWalled) //MOVE LEFT
             {
-                Vector3 provisionalPos = this.transform.position;
+                Vector2 provisionalPos = this.transform.position;
 
                 provisionalPos.x -= speed * Time.deltaTime;
 
                 this.gameObject.transform.position = provisionalPos;
             }
-            else if(inputScript.PressingLeft && leftUpWalled)
+            else if(inputScript.PressingLeft && leftUpWalled) //SNAIL LEFT WALL
             {
                 snailingInLeftWall = true;
                 rb.gravityScale = 0;
             }
 
-            if(inputScript.PressingRight && !rightUpWalled)
+            if(inputScript.PressingLeft && !bottomUpWalled) //GOES DOWN RIGHT WALL
             {
-                Vector3 provisionalPos = this.transform.position;
+
+            }
+
+            if(inputScript.PressingRight && !rightUpWalled) //MOVE RIGHT
+            {
+                Vector2 provisionalPos = this.transform.position;
 
                 provisionalPos.x += speed * Time.deltaTime;
 
                 this.gameObject.transform.position = provisionalPos;
             }
-            else if(inputScript.PressingRight && rightUpWalled)
+            else if(inputScript.PressingRight && rightUpWalled) //SNAIL RIGHT WALL
             {
+                snailingInRightWall = true;
+                rb.gravityScale = 0;
+            }
+
+            if(inputScript.PressingRight && !bottomDownWalled) //GOES DOWN TO LEFT WALL
+            {
+                goingToPos = new Vector2(this.transform.position.x + 0.55f, this.transform.position.y - 1f);
+                goingDownRight = true;
                 snailingInLeftWall = true;
                 rb.gravityScale = 0;
+                FreezeState();
             }
         }
 
-        if(snailingInLeftWall || snailingInRightWall)
+        if(snailingInLeftWall)
         {
-            if(inputScript.PressingUp && !topWalled)
+            if(inputScript.PressingUp && leftUpWalled)
             {
-                Vector3 provisionalPos = this.transform.position;
+                Vector2 provisionalPos = this.transform.position;
 
                 provisionalPos.y += speed * Time.deltaTime;
 
                 this.gameObject.transform.position = provisionalPos;
             }
+            else if(inputScript.PressingUp && !leftUpWalled) //GOES UP LEFT WALL
+            {
+                goingToPos = new Vector2(this.transform.position.x - 1, this.transform.position.y + 0.6f);
+                goingUpLeft = true;
+                snailingInLeftWall = false;
+                rb.gravityScale = 1;
+                FreezeState();
+            }
 
             if(inputScript.PressingDown && !bottomDownWalled)
             {
-                Vector3 provisionalPos = this.transform.position;
+                Vector2 provisionalPos = this.transform.position;
 
                 provisionalPos.y -= speed * Time.deltaTime;
 
@@ -157,8 +190,55 @@ public class Player : MonoBehaviour
             else if(inputScript.PressingDown && bottomDownWalled)
             {
                 snailingInLeftWall = false;
+                rb.gravityScale = 1;
+            }
+
+            if(inputScript.PressingSpace)
+            {
+                rb.gravityScale = 1;
+                rb.AddForce(new Vector2(1, 0), ForceMode2D.Impulse);
+                snailingInLeftWall = false;
+            }
+        }
+
+        if(snailingInRightWall)
+        {
+            if(inputScript.PressingUp && rightUpWalled)
+            {
+                Vector2 provisionalPos = this.transform.position;
+
+                provisionalPos.y += speed * Time.deltaTime;
+
+                this.gameObject.transform.position = provisionalPos;
+            }
+            else if(inputScript.PressingUp && !rightUpWalled) //TODO: GOES UP THE RIGHT PLATFORM
+            {
+                goingToPos = new Vector2(this.transform.position.x + 1, this.transform.position.y + 0.6f);
+                goingUpRight = true;
                 snailingInRightWall = false;
                 rb.gravityScale = 1;
+                FreezeState();
+            }
+
+            if(inputScript.PressingDown && !bottomDownWalled)
+            {
+                Vector2 provisionalPos = this.transform.position;
+
+                provisionalPos.y -= speed * Time.deltaTime;
+
+                this.gameObject.transform.position = provisionalPos;
+            }
+            else if(inputScript.PressingDown && bottomDownWalled)
+            {
+                snailingInRightWall = false;
+                rb.gravityScale = 1;
+            }
+
+            if(inputScript.PressingSpace)
+            {
+                rb.gravityScale = 1;
+                rb.AddForce(new Vector2(-1, 0), ForceMode2D.Impulse);
+                snailingInRightWall = false;
             }
         }
     }
@@ -190,10 +270,100 @@ public class Player : MonoBehaviour
 
     void Freeze()
     {
+        if(goingUpLeft) GoToUpLeft();
 
+        if(goingUpRight) GoToUpRight();
+
+        if(goingDownRight) GoToDownRight();
     }
 
     #endregion
+
+    void GoToUpLeft()
+    {
+        if(this.transform.position.y <= goingToPos.y)
+        {
+            Vector2 provisionalPos = this.transform.position;
+
+            provisionalPos.y += Time.deltaTime*5;
+
+            this.gameObject.transform.position = provisionalPos;
+
+            if(this.transform.position.y >= goingToPos.y && this.transform.position.x > goingToPos.x)
+            {
+                provisionalPos.y = goingToPos.y;
+
+                provisionalPos.x -= Time.deltaTime * 5;
+
+                this.gameObject.transform.position = provisionalPos;
+
+                if(this.transform.position.x <= goingToPos.x)
+                {
+                    this.gameObject.transform.position = goingToPos;
+                    goingUpLeft = false;
+                    IdleState();
+                }
+            }
+        }
+    }
+
+    void GoToUpRight()
+    {
+        if(this.transform.position.y <= goingToPos.y)
+        {
+            Vector2 provisionalPos = this.transform.position;
+
+            provisionalPos.y += Time.deltaTime * 5;
+
+            this.gameObject.transform.position = provisionalPos;
+
+            if(this.transform.position.y >= goingToPos.y && this.transform.position.x < goingToPos.x)
+            {
+                provisionalPos.y = goingToPos.y;
+
+                provisionalPos.x += Time.deltaTime * 5;
+
+                this.gameObject.transform.position = provisionalPos;
+
+                if(this.transform.position.x >= goingToPos.x)
+                {
+                    this.gameObject.transform.position = goingToPos;
+                    goingUpRight = false;
+                    IdleState();
+                }
+            }
+        }
+    }
+
+    void GoToDownRight()
+    {
+        if(this.transform.position.x <= goingToPos.x)
+        {
+            Vector2 provisionalPos = this.transform.position;
+
+            provisionalPos.x += Time.deltaTime * 5;
+
+            this.gameObject.transform.position = provisionalPos;
+
+            if(this.transform.position.x >= goingToPos.x && this.transform.position.y > goingToPos.y)
+            {
+                provisionalPos.x = goingToPos.x;
+
+                provisionalPos.y -= Time.deltaTime * 5;
+
+                this.gameObject.transform.position = provisionalPos;
+
+                if(this.transform.position.y <= goingToPos.y)
+                {
+                    this.gameObject.transform.position = goingToPos;
+                    goingDownRight = false;
+                    IdleState();
+                }
+            }
+        }
+    }
+
+
 
     #region WALL DETECTION METHODS
 
@@ -214,14 +384,14 @@ public class Player : MonoBehaviour
         leftUpWalled = false;
         leftDownWalled = false;
 
-        numHits = Physics2D.Raycast(new Vector2(this.transform.position.x + leftUpOrigin.x, this.transform.position.y + leftUpOrigin.y), new Vector2(0, 1), contactfilter, rayHit, leftDistance);
+        numHits = Physics2D.Raycast(new Vector2(this.transform.position.x + leftUpOrigin.x, this.transform.position.y + leftUpOrigin.y), new Vector2(-1, 0), contactfilter, rayHit, leftDistance);
 
         if(numHits > 0)
         {
             leftUpWalled = true;
         }
 
-        numHits = Physics2D.Raycast(new Vector2(this.transform.position.x + leftDownOrigin.x, this.transform.position.y + leftDownOrigin.y), new Vector2(0, 1), contactfilter, rayHit, leftDistance);
+        numHits = Physics2D.Raycast(new Vector2(this.transform.position.x + leftDownOrigin.x, this.transform.position.y + leftDownOrigin.y), new Vector2(-1, 0), contactfilter, rayHit, leftDistance);
 
         if(numHits > 0)
         {
@@ -255,14 +425,14 @@ public class Player : MonoBehaviour
         rightUpWalled = false;
         rightDownWalled = false;
 
-        numHits = Physics2D.Raycast(new Vector2(this.transform.position.x + rightUpOrigin.x, this.transform.position.y + rightUpOrigin.y), new Vector2(0, 1), contactfilter, rayHit, rightDistance);
+        numHits = Physics2D.Raycast(new Vector2(this.transform.position.x + rightUpOrigin.x, this.transform.position.y + rightUpOrigin.y), new Vector2(1, 0), contactfilter, rayHit, rightDistance);
 
         if(numHits > 0)
         {
             rightUpWalled = true;
         }
 
-        numHits = Physics2D.Raycast(new Vector2(this.transform.position.x + rightDownOrigin.x, this.transform.position.y + rightDownOrigin.y), new Vector2(0, 1), contactfilter, rayHit, rightDistance);
+        numHits = Physics2D.Raycast(new Vector2(this.transform.position.x + rightDownOrigin.x, this.transform.position.y + rightDownOrigin.y), new Vector2(1, 0), contactfilter, rayHit, rightDistance);
 
         if(numHits > 0)
         {

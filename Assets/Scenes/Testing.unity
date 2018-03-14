@@ -2009,6 +2009,15 @@ MonoBehaviour:
   rightUpOrigin: {x: 0.27, y: 0.45}
   rightDownOrigin: {x: 0.27, y: 0.16}
   rightDistance: 0.14
+  topWalled: 0
+  leftUpWalled: 0
+  leftDownWalled: 0
+  rightUpWalled: 0
+  rightDownWalled: 0
+  bottomUpWalled: 0
+  bottomDownWalled: 0
+  snailingInLeftWall: 0
+  snailingInRightWall: 0
   contactfilter:
     useTriggers: 0
     useLayerMask: 1
@@ -2024,15 +2033,6 @@ MonoBehaviour:
     minNormalAngle: 0
     maxNormalAngle: 0
   pukeCharge: 0
-  topWalled: 0
-  leftUpWalled: 0
-  leftDownWalled: 0
-  rightUpWalled: 0
-  rightDownWalled: 0
-  bottomUpWalled: 0
-  bottomDownWalled: 0
-  snailingInLeftWall: 0
-  snailingInRightWall: 0
 --- !u!4 &1121745470
 Transform:
   m_ObjectHideFlags: 0
@@ -2040,7 +2040,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1121745467}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.23, y: -1.96, z: 0}
+  m_LocalPosition: {x: -4.321, y: 1.11, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1561607183}
