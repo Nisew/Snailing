@@ -49,6 +49,7 @@ public class Player : MonoBehaviour
     bool goingDownLeft;
     bool goingUpRight;
     bool goingDownRight;
+    bool arrived;
 
     public PlayerState currentPlayerState;
     public enum PlayerState
@@ -107,10 +108,7 @@ public class Player : MonoBehaviour
 
     void Idle()
     {
-        if(inputScript.PressingUp || inputScript.PressingLeft || inputScript.PressingDown || inputScript.PressingRight)
-        {
-            MoveState();
-        }
+        MoveState();
     }
 
     void Move()
@@ -131,9 +129,13 @@ public class Player : MonoBehaviour
                 rb.gravityScale = 0;
             }
 
-            if(inputScript.PressingLeft && !bottomUpWalled) //GOES DOWN RIGHT WALL
+            if(inputScript.PressingLeft && !bottomUpWalled) //GOES DOWN TO RIGHT WALL
             {
-
+                goingToPos = new Vector2(this.transform.position.x - 0.7f, this.transform.position.y - 1f);
+                goingDownLeft = true;
+                snailingInRightWall = true;
+                rb.gravityScale = 0;
+                FreezeState();
             }
 
             if(inputScript.PressingRight && !rightUpWalled) //MOVE RIGHT
@@ -152,7 +154,7 @@ public class Player : MonoBehaviour
 
             if(inputScript.PressingRight && !bottomDownWalled) //GOES DOWN TO LEFT WALL
             {
-                goingToPos = new Vector2(this.transform.position.x + 0.55f, this.transform.position.y - 1f);
+                goingToPos = new Vector2(this.transform.position.x + 0.6f, this.transform.position.y - 1f);
                 goingDownRight = true;
                 snailingInLeftWall = true;
                 rb.gravityScale = 0;
@@ -172,10 +174,9 @@ public class Player : MonoBehaviour
             }
             else if(inputScript.PressingUp && !leftUpWalled) //GOES UP LEFT WALL
             {
-                goingToPos = new Vector2(this.transform.position.x - 1, this.transform.position.y + 0.6f);
+                goingToPos = new Vector2(this.transform.position.x - 1, this.transform.position.y + 0.5f);
                 goingUpLeft = true;
                 snailingInLeftWall = false;
-                rb.gravityScale = 1;
                 FreezeState();
             }
 
@@ -211,12 +212,11 @@ public class Player : MonoBehaviour
 
                 this.gameObject.transform.position = provisionalPos;
             }
-            else if(inputScript.PressingUp && !rightUpWalled) //TODO: GOES UP THE RIGHT PLATFORM
+            else if(inputScript.PressingUp && !rightUpWalled) //GOES UP RIGHT WALL
             {
-                goingToPos = new Vector2(this.transform.position.x + 1, this.transform.position.y + 0.6f);
+                goingToPos = new Vector2(this.transform.position.x + 1, this.transform.position.y + 0.5f);
                 goingUpRight = true;
                 snailingInRightWall = false;
-                rb.gravityScale = 1;
                 FreezeState();
             }
 
@@ -275,9 +275,13 @@ public class Player : MonoBehaviour
         if(goingUpRight) GoToUpRight();
 
         if(goingDownRight) GoToDownRight();
+
+        if (goingDownLeft) GoToDownLeft();
     }
 
     #endregion
+
+    #region WALL TRANSITION METHODS
 
     void GoToUpLeft()
     {
@@ -285,7 +289,7 @@ public class Player : MonoBehaviour
         {
             Vector2 provisionalPos = this.transform.position;
 
-            provisionalPos.y += Time.deltaTime*5;
+            provisionalPos.y += Time.deltaTime*3;
 
             this.gameObject.transform.position = provisionalPos;
 
@@ -293,7 +297,7 @@ public class Player : MonoBehaviour
             {
                 provisionalPos.y = goingToPos.y;
 
-                provisionalPos.x -= Time.deltaTime * 5;
+                provisionalPos.x -= Time.deltaTime * 3;
 
                 this.gameObject.transform.position = provisionalPos;
 
@@ -301,6 +305,7 @@ public class Player : MonoBehaviour
                 {
                     this.gameObject.transform.position = goingToPos;
                     goingUpLeft = false;
+                    rb.gravityScale = 1;
                     IdleState();
                 }
             }
@@ -313,7 +318,7 @@ public class Player : MonoBehaviour
         {
             Vector2 provisionalPos = this.transform.position;
 
-            provisionalPos.y += Time.deltaTime * 5;
+            provisionalPos.y += Time.deltaTime * 3;
 
             this.gameObject.transform.position = provisionalPos;
 
@@ -321,13 +326,14 @@ public class Player : MonoBehaviour
             {
                 provisionalPos.y = goingToPos.y;
 
-                provisionalPos.x += Time.deltaTime * 5;
+                provisionalPos.x += Time.deltaTime * 3;
 
                 this.gameObject.transform.position = provisionalPos;
 
                 if(this.transform.position.x >= goingToPos.x)
                 {
                     this.gameObject.transform.position = goingToPos;
+                    rb.gravityScale = 1;
                     goingUpRight = false;
                     IdleState();
                 }
@@ -337,11 +343,11 @@ public class Player : MonoBehaviour
 
     void GoToDownRight()
     {
-        if(this.transform.position.x <= goingToPos.x)
-        {
-            Vector2 provisionalPos = this.transform.position;
+        Vector2 provisionalPos = this.transform.position;
 
-            provisionalPos.x += Time.deltaTime * 5;
+        if(this.transform.position.x <= goingToPos.x && !arrived)
+        {
+            provisionalPos.x += Time.deltaTime * 3;
 
             this.gameObject.transform.position = provisionalPos;
 
@@ -349,21 +355,71 @@ public class Player : MonoBehaviour
             {
                 provisionalPos.x = goingToPos.x;
 
-                provisionalPos.y -= Time.deltaTime * 5;
+                provisionalPos.y -= Time.deltaTime * 3;
 
                 this.gameObject.transform.position = provisionalPos;
 
                 if(this.transform.position.y <= goingToPos.y)
                 {
-                    this.gameObject.transform.position = goingToPos;
-                    goingDownRight = false;
-                    IdleState();
+                    arrived = true;
                 }
             }
         }
+
+        if (arrived && !leftUpWalled)
+        {
+            provisionalPos.x -= Time.deltaTime * 3;
+
+            this.gameObject.transform.position = provisionalPos;
+        }
+        else if (arrived && leftUpWalled)
+        {
+            goingDownRight = false;
+            arrived = false;
+            IdleState();
+        }
     }
 
+    void GoToDownLeft()
+    {
+        Vector2 provisionalPos = this.transform.position;
 
+        if (this.transform.position.x >= goingToPos.x && !arrived)
+        {
+            provisionalPos.x -= Time.deltaTime * 3;
+
+            this.gameObject.transform.position = provisionalPos;
+
+            if (this.transform.position.x <= goingToPos.x && this.transform.position.y > goingToPos.y)
+            {
+                provisionalPos.x = goingToPos.x;
+
+                provisionalPos.y -= Time.deltaTime * 3;
+
+                this.gameObject.transform.position = provisionalPos;
+
+                if (this.transform.position.y <= goingToPos.y)
+                {
+                    arrived = true;
+                }
+            }
+        }
+
+        if (arrived && !rightUpWalled)
+        {
+            provisionalPos.x += Time.deltaTime * 3;
+
+            this.gameObject.transform.position = provisionalPos;
+        }
+        else if (arrived && rightUpWalled)
+        {
+            goingDownLeft = false;
+            arrived = false;
+            IdleState();
+        }
+    }
+
+    #endregion
 
     #region WALL DETECTION METHODS
 
