@@ -10,7 +10,11 @@ public class Puke : MonoBehaviour
 	void Start ()
     {
         rb = GetComponent<Rigidbody2D>();
-        rb.AddForce((Camera.main.ScreenToWorldPoint(Input.mousePosition) - this.transform.position).normalized * speed, ForceMode2D.Impulse);
+        Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 dir = worldPoint - (Vector2)this.transform.localPosition;
+        dir.Normalize();
+
+        rb.AddForce(dir * speed, ForceMode2D.Impulse);
     }
 
     void Update ()

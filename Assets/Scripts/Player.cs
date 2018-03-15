@@ -43,6 +43,7 @@ public class Player : MonoBehaviour
     [Header("Player properties")]
     float speed = 1;
     public float pukeCharge;
+    float maxPukeChare = 10;
 
     Vector2 goingToPos;
     bool goingUpLeft;
@@ -245,9 +246,9 @@ public class Player : MonoBehaviour
 
     void Spit()
     {
-        pukeCharge += Time.deltaTime * 20;
+        pukeCharge += Time.deltaTime * 10;
 
-        if(pukeCharge >= 20) pukeCharge = 20;
+        if(pukeCharge >= maxPukeChare) pukeCharge = maxPukeChare;
 
         if(Input.GetMouseButtonUp(0))
         {
