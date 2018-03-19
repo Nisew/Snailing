@@ -798,6 +798,48 @@ Prefab:
     - {fileID: 50812930686336142, guid: b14bd229ec0662542bfcb0d2d0eb14e0, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: b14bd229ec0662542bfcb0d2d0eb14e0, type: 2}
   m_IsPrefabParent: 0
+--- !u!1001 &393395060
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4038011010330340, guid: 22d17a55bf329c84d9364c986497fed6, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 2.51
+      objectReference: {fileID: 0}
+    - target: {fileID: 4038011010330340, guid: 22d17a55bf329c84d9364c986497fed6, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0.999
+      objectReference: {fileID: 0}
+    - target: {fileID: 4038011010330340, guid: 22d17a55bf329c84d9364c986497fed6, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0.07609979
+      objectReference: {fileID: 0}
+    - target: {fileID: 4038011010330340, guid: 22d17a55bf329c84d9364c986497fed6, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4038011010330340, guid: 22d17a55bf329c84d9364c986497fed6, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4038011010330340, guid: 22d17a55bf329c84d9364c986497fed6, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4038011010330340, guid: 22d17a55bf329c84d9364c986497fed6, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4038011010330340, guid: 22d17a55bf329c84d9364c986497fed6, type: 2}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 22d17a55bf329c84d9364c986497fed6, type: 2}
+  m_IsPrefabParent: 0
 --- !u!61 &404346753 stripped
 BoxCollider2D:
   m_PrefabParentObject: {fileID: 61054917351657160, guid: b14bd229ec0662542bfcb0d2d0eb14e0,
@@ -1954,6 +1996,7 @@ GameObject:
   - component: {fileID: 1121745469}
   - component: {fileID: 1121745468}
   - component: {fileID: 1121745471}
+  - component: {fileID: 1121745472}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2068,6 +2111,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!70 &1121745472
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1121745467}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.34, y: 0.02}
+  m_Size: {x: 0.46, y: 0.18}
+  m_Direction: 1
 --- !u!1001 &1135488732
 Prefab:
   m_ObjectHideFlags: 0

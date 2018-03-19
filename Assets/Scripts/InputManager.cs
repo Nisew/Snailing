@@ -60,6 +60,11 @@ public class InputManager : MonoBehaviour
         {
             pressingSpace = false;
         }
+
+        if(Input.GetKeyDown(KeyCode.F))
+        {
+            player.TryDrink();
+        }
     }
 
     public bool PressingUp { get { return pressingUp; } }

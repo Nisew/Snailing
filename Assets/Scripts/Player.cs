@@ -44,6 +44,9 @@ public class Player : MonoBehaviour
     float speed = 1;
     public float pukeCharge;
     float maxPukeChare = 10;
+    bool canDrink;
+    Drink drinkObject;
+    CapsuleCollider2D drinkDetector;
 
     Vector2 goingToPos;
     bool goingUpLeft;
@@ -67,6 +70,7 @@ public class Player : MonoBehaviour
     {
         inputScript = GameObject.FindGameObjectWithTag("Input").GetComponent<InputManager>();
         rb = GetComponent<Rigidbody2D>();
+        drinkDetector = GetComponent<CapsuleCollider2D>();
         IdleState();
 	}
 
@@ -261,7 +265,8 @@ public class Player : MonoBehaviour
 
     void Drink()
     {
-
+        drinkObject.Disappear();
+        IdleState();
     }
 
     void Dead()
@@ -494,6 +499,36 @@ public class Player : MonoBehaviour
         if(numHits > 0)
         {
             rightDownWalled = true;
+        }
+    }
+
+    #endregion
+
+    #region MECHANICS METHODS
+
+    public void TryDrink()
+    {
+        if(canDrink)
+        {
+            DrinkState();
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.tag == "Drink")
+        {
+            drinkObject = collision.GetComponent<Drink>();
+            canDrink = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "Drink")
+        {
+            drinkObject = null;
+            canDrink = false;
         }
     }
 
