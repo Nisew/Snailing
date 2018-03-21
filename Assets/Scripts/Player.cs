@@ -282,7 +282,7 @@ public class Player : MonoBehaviour
 
         if(goingDownRight) GoToDownRight();
 
-        if (goingDownLeft) GoToDownLeft();
+        if(goingDownLeft) GoToDownLeft();
     }
 
     #endregion
@@ -470,7 +470,6 @@ public class Player : MonoBehaviour
         
         if(numHits > 0)
         {
-            Debug.Log("bottomUpWalled");
             bottomUpWalled = true;
         }
 

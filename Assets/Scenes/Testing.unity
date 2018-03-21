@@ -798,48 +798,6 @@ Prefab:
     - {fileID: 50812930686336142, guid: b14bd229ec0662542bfcb0d2d0eb14e0, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: b14bd229ec0662542bfcb0d2d0eb14e0, type: 2}
   m_IsPrefabParent: 0
---- !u!1001 &393395060
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4038011010330340, guid: 22d17a55bf329c84d9364c986497fed6, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 2.51
-      objectReference: {fileID: 0}
-    - target: {fileID: 4038011010330340, guid: 22d17a55bf329c84d9364c986497fed6, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0.999
-      objectReference: {fileID: 0}
-    - target: {fileID: 4038011010330340, guid: 22d17a55bf329c84d9364c986497fed6, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0.07609979
-      objectReference: {fileID: 0}
-    - target: {fileID: 4038011010330340, guid: 22d17a55bf329c84d9364c986497fed6, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4038011010330340, guid: 22d17a55bf329c84d9364c986497fed6, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4038011010330340, guid: 22d17a55bf329c84d9364c986497fed6, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4038011010330340, guid: 22d17a55bf329c84d9364c986497fed6, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4038011010330340, guid: 22d17a55bf329c84d9364c986497fed6, type: 2}
-      propertyPath: m_RootOrder
-      value: 8
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 22d17a55bf329c84d9364c986497fed6, type: 2}
-  m_IsPrefabParent: 0
 --- !u!61 &404346753 stripped
 BoxCollider2D:
   m_PrefabParentObject: {fileID: 61054917351657160, guid: b14bd229ec0662542bfcb0d2d0eb14e0,
@@ -2084,7 +2042,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1121745467}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.36, y: 1.07, z: 0}
+  m_LocalPosition: {x: -2.4, y: -1.77, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1561607183}
