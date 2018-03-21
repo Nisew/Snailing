@@ -7,7 +7,6 @@ public class Puke : MonoBehaviour
     Rigidbody2D rb;
     public float speed;
     public GameObject pukeOnGroundObject;
-    RaycastHit2D rayCastHit;
 
     void Start ()
     {
@@ -24,24 +23,31 @@ public class Puke : MonoBehaviour
 		
 	}
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
+        ContactPoint2D[] contacts =  collision.contacts;
+
         if(collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
-            Debug.Log("collision");
-
-            rayCastHit = Physics2D.Raycast(this.transform.position, Vector2.down, 50f);
-
-            if(rayCastHit.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
+            if(contacts[0].normal == Vector2.left)
             {
-                Instantiate(pukeOnGroundObject, this.transform.position, new Quaternion(0, 0, 0, 0));
+                Instantiate(pukeOnGroundObject, new Vector2(this.transform.position.x + 0.05f, this.transform.position.y), Quaternion.Euler(0,0,-90));
             }
-            else if(rayCastHit.collider.gameObject.layer != LayerMask.NameToLayer("Ground"))
+            if(contacts[0].normal == Vector2.right)
             {
-                rayCastHit = Physics2D.Raycast(this.transform.position, Vector2.down, 1f);
+                Instantiate(pukeOnGroundObject, new Vector2(this.transform.position.x - 0.05f, this.transform.position.y), Quaternion.Euler(0, 0, 90));
             }
+            if(contacts[0].normal == Vector2.up)
+            {
+                Instantiate(pukeOnGroundObject, new Vector2(this.transform.position.x, this.transform.position.y - 0.05f), Quaternion.Euler(0, 0, 0));
+            }
+            if(contacts[0].normal == Vector2.down)
+            {
+                Instantiate(pukeOnGroundObject, new Vector2(this.transform.position.x, this.transform.position.y + 0.05f), Quaternion.Euler(0, 0, 180));
+            }
+            Destroy(this.gameObject);
+        }
 
-            Destroy(this.gameObject);            
-        }        
     }
+
 }

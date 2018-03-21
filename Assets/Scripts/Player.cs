@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     [Header("Game elements")]
     InputManager inputScript;
     public GameObject puke;
+    GameObject tile;
     Rigidbody2D rb;
 
     [Header("Ground detection")]
@@ -38,15 +39,16 @@ public class Player : MonoBehaviour
 
     RaycastHit2D[] rayHit = new RaycastHit2D[1];
     int numHits;
-    public ContactFilter2D contactfilter;
+    public ContactFilter2D contactFilter;
+    public ContactFilter2D drinkFilter;
 
     [Header("Player properties")]
     float speed = 1;
     public float pukeCharge;
     float maxPukeChare = 10;
     bool canDrink;
-    Drink drinkObject;
-    CapsuleCollider2D drinkDetector;
+    bool drinking;
+    bool facingRight;
 
     Vector2 goingToPos;
     bool goingUpLeft;
@@ -70,7 +72,7 @@ public class Player : MonoBehaviour
     {
         inputScript = GameObject.FindGameObjectWithTag("Input").GetComponent<InputManager>();
         rb = GetComponent<Rigidbody2D>();
-        drinkDetector = GetComponent<CapsuleCollider2D>();
+        tile = this.transform.GetChild(0).gameObject;
         IdleState();
 	}
 
@@ -80,6 +82,7 @@ public class Player : MonoBehaviour
         LeftWallDetection();
         BottomWallDetection();
         RightWallDetection();
+
     }
 
     void Update ()
@@ -265,7 +268,6 @@ public class Player : MonoBehaviour
 
     void Drink()
     {
-        drinkObject.Disappear();
         IdleState();
     }
 
@@ -433,7 +435,7 @@ public class Player : MonoBehaviour
     {
         topWalled = false;
 
-        numHits = Physics2D.Raycast(new Vector2(this.transform.position.x + topOrigin.x, this.transform.position.y + topOrigin.y), new Vector2(0, 1), contactfilter, rayHit, topDistance);
+        numHits = Physics2D.Raycast(new Vector2(this.transform.position.x + topOrigin.x, this.transform.position.y + topOrigin.y), new Vector2(0, 1), contactFilter, rayHit, topDistance);
 
         if(numHits > 0)
         {
@@ -446,14 +448,14 @@ public class Player : MonoBehaviour
         leftUpWalled = false;
         leftDownWalled = false;
 
-        numHits = Physics2D.Raycast(new Vector2(this.transform.position.x + leftUpOrigin.x, this.transform.position.y + leftUpOrigin.y), new Vector2(-1, 0), contactfilter, rayHit, leftDistance);
+        numHits = Physics2D.Raycast(new Vector2(this.transform.position.x + leftUpOrigin.x, this.transform.position.y + leftUpOrigin.y), new Vector2(-1, 0), contactFilter, rayHit, leftDistance);
 
         if(numHits > 0)
         {
             leftUpWalled = true;
         }
 
-        numHits = Physics2D.Raycast(new Vector2(this.transform.position.x + leftDownOrigin.x, this.transform.position.y + leftDownOrigin.y), new Vector2(-1, 0), contactfilter, rayHit, leftDistance);
+        numHits = Physics2D.Raycast(new Vector2(this.transform.position.x + leftDownOrigin.x, this.transform.position.y + leftDownOrigin.y), new Vector2(-1, 0), contactFilter, rayHit, leftDistance);
 
         if(numHits > 0)
         {
@@ -466,14 +468,14 @@ public class Player : MonoBehaviour
         bottomUpWalled = false;
         bottomDownWalled = false;
 
-        numHits = Physics2D.Raycast(new Vector2(this.transform.position.x + bottomUpOrigin.x, this.transform.position.y + bottomUpOrigin.y), new Vector2(0, -1), contactfilter, rayHit, bottomDistance);
+        numHits = Physics2D.Raycast(new Vector2(this.transform.position.x + bottomUpOrigin.x, this.transform.position.y + bottomUpOrigin.y), new Vector2(0, -1), contactFilter, rayHit, bottomDistance);
         
         if(numHits > 0)
         {
             bottomUpWalled = true;
         }
 
-        numHits = Physics2D.Raycast(new Vector2(this.transform.position.x + bottomDownOrigin.x, this.transform.position.y + bottomDownOrigin.y), new Vector2(0, -1), contactfilter, rayHit, bottomDistance);
+        numHits = Physics2D.Raycast(new Vector2(this.transform.position.x + bottomDownOrigin.x, this.transform.position.y + bottomDownOrigin.y), new Vector2(0, -1), contactFilter, rayHit, bottomDistance);
 
         if(numHits > 0)
         {
@@ -486,14 +488,14 @@ public class Player : MonoBehaviour
         rightUpWalled = false;
         rightDownWalled = false;
 
-        numHits = Physics2D.Raycast(new Vector2(this.transform.position.x + rightUpOrigin.x, this.transform.position.y + rightUpOrigin.y), new Vector2(1, 0), contactfilter, rayHit, rightDistance);
+        numHits = Physics2D.Raycast(new Vector2(this.transform.position.x + rightUpOrigin.x, this.transform.position.y + rightUpOrigin.y), new Vector2(1, 0), contactFilter, rayHit, rightDistance);
 
         if(numHits > 0)
         {
             rightUpWalled = true;
         }
 
-        numHits = Physics2D.Raycast(new Vector2(this.transform.position.x + rightDownOrigin.x, this.transform.position.y + rightDownOrigin.y), new Vector2(1, 0), contactfilter, rayHit, rightDistance);
+        numHits = Physics2D.Raycast(new Vector2(this.transform.position.x + rightDownOrigin.x, this.transform.position.y + rightDownOrigin.y), new Vector2(1, 0), contactFilter, rayHit, rightDistance);
 
         if(numHits > 0)
         {
@@ -507,28 +509,46 @@ public class Player : MonoBehaviour
 
     public void TryDrink()
     {
-        if(canDrink)
+        RaycastHit2D[] drinkResults = new RaycastHit2D[1];
+
+        int drinks = rb.Cast(new Vector2(0.01f, 0f), drinkFilter, drinkResults);
+
+        if(drinks > 0)
         {
-            DrinkState();
+            if(drinkResults[0].collider.gameObject.transform.position.y > this.transform.position.y + 0.3f && !facingRight)
+            {
+                Flip();
+            }
+
+            Destroy(drinkResults[0].collider.gameObject);
+            return;
+        }
+
+        drinks = rb.Cast(new Vector2(-0.01f, 0f), drinkFilter, drinkResults);
+
+        if(drinks > 0)
+        {
+            if(drinkResults[0].collider.gameObject.transform.position.y < this.transform.position.y - 0.3f && facingRight)
+            {
+                Flip();
+            }
+
+            Destroy(drinkResults[0].collider.gameObject);
+            return;
+        }
+
+        drinks = rb.Cast(new Vector2(0f, -0.01f), drinkFilter, drinkResults);
+
+        if(drinks > 0)
+        {
+            Destroy(drinkResults[0].collider.gameObject);
+            return;
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    void Flip()
     {
-        if(collision.tag == "Drink")
-        {
-            drinkObject = collision.GetComponent<Drink>();
-            canDrink = true;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.tag == "Drink")
-        {
-            drinkObject = null;
-            canDrink = false;
-        }
+        
     }
 
     #endregion
@@ -567,7 +587,7 @@ public class Player : MonoBehaviour
 
     #endregion
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawRay(new Vector2(this.transform.position.x + topOrigin.x, this.transform.position.y + topOrigin.y), new Vector2(0, topDistance));

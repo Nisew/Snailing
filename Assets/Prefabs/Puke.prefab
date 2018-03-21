@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 58455169973625926}
   - component: {fileID: 50214300558850146}
   - component: {fileID: 114883089909148452}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Puke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -118,7 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 903e16186aaa3244e81caeb306b29ebc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2.150074
+  speed: 0.2483368
   pukeOnGroundObject: {fileID: 1806201473817202, guid: 22d17a55bf329c84d9364c986497fed6,
     type: 2}
 --- !u!212 &212184012716530010
