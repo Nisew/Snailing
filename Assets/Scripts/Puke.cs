@@ -27,7 +27,7 @@ public class Puke : MonoBehaviour
     {
         ContactPoint2D[] contacts =  collision.contacts;
 
-        if(collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        if(collision.gameObject.layer == LayerMask.NameToLayer("Ground") && contacts != null)
         {
             if(contacts[0].normal == Vector2.left)
             {

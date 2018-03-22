@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
     float maxPukeChare = 10;
     bool canDrink;
     bool drinking;
-    bool facingRight;
+    bool facingRight = true;
 
     Vector2 goingToPos;
     bool goingUpLeft;
@@ -125,6 +125,7 @@ public class Player : MonoBehaviour
         {
             if(inputScript.PressingLeft && !leftUpWalled && bottomUpWalled) //MOVE LEFT
             {
+                if (facingRight) Flip();
                 Vector2 provisionalPos = this.transform.position;
 
                 provisionalPos.x -= speed * Time.deltaTime;
@@ -133,6 +134,8 @@ public class Player : MonoBehaviour
             }
             else if(inputScript.PressingLeft && leftUpWalled) //SNAIL LEFT WALL
             {
+                if (facingRight) Flip();
+                tile.transform.localRotation = Quaternion.Euler(0, 0, -90);
                 snailingInLeftWall = true;
                 rb.gravityScale = 0;
             }
@@ -140,6 +143,7 @@ public class Player : MonoBehaviour
             if(inputScript.PressingLeft && !bottomUpWalled) //GOES DOWN TO RIGHT WALL
             {
                 goingToPos = new Vector2(this.transform.position.x - 0.7f, this.transform.position.y - 1f);
+                tile.transform.localRotation = Quaternion.Euler(0, 0, 90);
                 goingDownLeft = true;
                 snailingInRightWall = true;
                 rb.gravityScale = 0;
@@ -148,6 +152,8 @@ public class Player : MonoBehaviour
 
             if(inputScript.PressingRight && !rightUpWalled) //MOVE RIGHT
             {
+                if (!facingRight) Flip();
+
                 Vector2 provisionalPos = this.transform.position;
 
                 provisionalPos.x += speed * Time.deltaTime;
@@ -156,6 +162,8 @@ public class Player : MonoBehaviour
             }
             else if(inputScript.PressingRight && rightUpWalled) //SNAIL RIGHT WALL
             {
+                if (!facingRight) Flip();
+                tile.transform.localRotation = Quaternion.Euler(0, 0, 90);
                 snailingInRightWall = true;
                 rb.gravityScale = 0;
             }
@@ -163,6 +171,7 @@ public class Player : MonoBehaviour
             if(inputScript.PressingRight && !bottomDownWalled) //GOES DOWN TO LEFT WALL
             {
                 goingToPos = new Vector2(this.transform.position.x + 0.6f, this.transform.position.y - 1f);
+                tile.transform.localRotation = Quaternion.Euler(0, 0, -90);
                 goingDownRight = true;
                 snailingInLeftWall = true;
                 rb.gravityScale = 0;
@@ -174,6 +183,8 @@ public class Player : MonoBehaviour
         {
             if(inputScript.PressingUp && leftUpWalled)
             {
+                if (facingRight) Flip();
+
                 Vector2 provisionalPos = this.transform.position;
 
                 provisionalPos.y += speed * Time.deltaTime;
@@ -183,6 +194,7 @@ public class Player : MonoBehaviour
             else if(inputScript.PressingUp && !leftUpWalled) //GOES UP LEFT WALL
             {
                 goingToPos = new Vector2(this.transform.position.x - 1, this.transform.position.y + 0.5f);
+                tile.transform.localRotation = Quaternion.Euler(0, 0, 0);
                 goingUpLeft = true;
                 snailingInLeftWall = false;
                 FreezeState();
@@ -190,6 +202,8 @@ public class Player : MonoBehaviour
 
             if(inputScript.PressingDown && !bottomDownWalled)
             {
+                if (!facingRight) Flip();
+
                 Vector2 provisionalPos = this.transform.position;
 
                 provisionalPos.y -= speed * Time.deltaTime;
@@ -198,7 +212,9 @@ public class Player : MonoBehaviour
             }
             else if(inputScript.PressingDown && bottomDownWalled)
             {
+                if (!facingRight) Flip();
                 snailingInLeftWall = false;
+                tile.transform.localRotation = Quaternion.Euler(0, 0, 0);
                 rb.gravityScale = 1;
             }
 
@@ -206,6 +222,7 @@ public class Player : MonoBehaviour
             {
                 rb.gravityScale = 1;
                 rb.AddForce(new Vector2(1, 0), ForceMode2D.Impulse);
+                tile.transform.localRotation = Quaternion.Euler(0, 0, 0);
                 snailingInLeftWall = false;
             }
         }
@@ -214,6 +231,8 @@ public class Player : MonoBehaviour
         {
             if(inputScript.PressingUp && rightUpWalled)
             {
+                if (!facingRight) Flip();
+
                 Vector2 provisionalPos = this.transform.position;
 
                 provisionalPos.y += speed * Time.deltaTime;
@@ -223,6 +242,7 @@ public class Player : MonoBehaviour
             else if(inputScript.PressingUp && !rightUpWalled) //GOES UP RIGHT WALL
             {
                 goingToPos = new Vector2(this.transform.position.x + 1, this.transform.position.y + 0.5f);
+                tile.transform.localRotation = Quaternion.Euler(0, 0, 0);
                 goingUpRight = true;
                 snailingInRightWall = false;
                 FreezeState();
@@ -230,6 +250,8 @@ public class Player : MonoBehaviour
 
             if(inputScript.PressingDown && !bottomDownWalled)
             {
+                if (facingRight) Flip();
+
                 Vector2 provisionalPos = this.transform.position;
 
                 provisionalPos.y -= speed * Time.deltaTime;
@@ -238,7 +260,9 @@ public class Player : MonoBehaviour
             }
             else if(inputScript.PressingDown && bottomDownWalled)
             {
+                if (facingRight) Flip();
                 snailingInRightWall = false;
+                tile.transform.localRotation = Quaternion.Euler(0, 0, 0);
                 rb.gravityScale = 1;
             }
 
@@ -246,6 +270,7 @@ public class Player : MonoBehaviour
             {
                 rb.gravityScale = 1;
                 rb.AddForce(new Vector2(-1, 0), ForceMode2D.Impulse);
+                tile.transform.localRotation = Quaternion.Euler(0, 0, 0);
                 snailingInRightWall = false;
             }
         }
@@ -515,7 +540,11 @@ public class Player : MonoBehaviour
 
         if(drinks > 0)
         {
-            if(drinkResults[0].collider.gameObject.transform.position.y > this.transform.position.y + 0.3f && !facingRight)
+            if(drinkResults[0].collider.gameObject.transform.position.y > this.transform.position.y + 0.3f && !facingRight && snailingInRightWall)
+            {
+                Flip();
+            }
+            if (drinkResults[0].collider.gameObject.transform.position.y < this.transform.position.y + 0.3f && facingRight && snailingInRightWall)
             {
                 Flip();
             }
@@ -528,7 +557,11 @@ public class Player : MonoBehaviour
 
         if(drinks > 0)
         {
-            if(drinkResults[0].collider.gameObject.transform.position.y < this.transform.position.y - 0.3f && facingRight)
+            if(drinkResults[0].collider.gameObject.transform.position.y < this.transform.position.y + 0.3f && facingRight && snailingInLeftWall)
+            {
+                Flip();
+            }
+            if (drinkResults[0].collider.gameObject.transform.position.y > this.transform.position.y + 0.3f && !facingRight && snailingInLeftWall)
             {
                 Flip();
             }
@@ -541,6 +574,14 @@ public class Player : MonoBehaviour
 
         if(drinks > 0)
         {
+            if (drinkResults[0].collider.gameObject.transform.position.x < this.transform.position.x && facingRight)
+            {
+                Flip();
+            }
+            else if (drinkResults[0].collider.gameObject.transform.position.x > this.transform.position.x && !facingRight)
+            {
+                Flip();
+            }
             Destroy(drinkResults[0].collider.gameObject);
             return;
         }
@@ -548,7 +589,10 @@ public class Player : MonoBehaviour
 
     void Flip()
     {
-        
+        float scaleX = tile.transform.localScale.x;
+        scaleX = scaleX * -1;
+        tile.transform.localScale = new Vector3(scaleX, 1, 1);
+        facingRight = !facingRight;
     }
 
     #endregion
