@@ -44,10 +44,13 @@ public class Player : MonoBehaviour
 
     [Header("Player properties")]
     float speed = 1;
+    bool falling;
     public float pukeCharge;
     float maxPukeChare = 10;
     bool canDrink;
     bool drinking;
+    float drinkTime = 1;
+    float drinkDistance = 0.01f;
     bool facingRight = true;
 
     Vector2 goingToPos;
@@ -73,7 +76,7 @@ public class Player : MonoBehaviour
         inputScript = GameObject.FindGameObjectWithTag("Input").GetComponent<InputManager>();
         rb = GetComponent<Rigidbody2D>();
         tile = this.transform.GetChild(0).gameObject;
-        IdleState();
+        IdleState(0f);
 	}
 
     void FixedUpdate()
@@ -224,6 +227,8 @@ public class Player : MonoBehaviour
                 rb.AddForce(new Vector2(1, 0), ForceMode2D.Impulse);
                 tile.transform.localRotation = Quaternion.Euler(0, 0, 0);
                 snailingInLeftWall = false;
+                falling = true;
+                FreezeState();
             }
         }
 
@@ -272,6 +277,8 @@ public class Player : MonoBehaviour
                 rb.AddForce(new Vector2(-1, 0), ForceMode2D.Impulse);
                 tile.transform.localRotation = Quaternion.Euler(0, 0, 0);
                 snailingInRightWall = false;
+                falling = true;
+                FreezeState();
             }
         }
     }
@@ -287,13 +294,20 @@ public class Player : MonoBehaviour
             puke.GetComponent<Puke>().speed = pukeCharge;
             Instantiate(puke, new Vector3(this.transform.position.x + 0.5f, this.transform.position.y + 0.8f, 0), new Quaternion(0, 0, 0, 0));
             pukeCharge = 0;
-            IdleState();
+            IdleState(0.5f);
         }
     }
 
     void Drink()
     {
-        IdleState();
+        drinkTime -= Time.deltaTime;
+
+        if(drinkTime < 0)
+        {
+            drinkTime = 1;
+            TryDrink();
+            IdleState(0);
+        }
     }
 
     void Dead()
@@ -310,6 +324,15 @@ public class Player : MonoBehaviour
         if(goingDownRight) GoToDownRight();
 
         if(goingDownLeft) GoToDownLeft();
+
+        if(falling)
+        {
+           if(bottomUpWalled || bottomDownWalled)
+           {
+                falling = false;
+                IdleState(0.5f);
+           }
+        }
     }
 
     #endregion
@@ -339,7 +362,7 @@ public class Player : MonoBehaviour
                     this.gameObject.transform.position = goingToPos;
                     goingUpLeft = false;
                     rb.gravityScale = 1;
-                    IdleState();
+                    IdleState(0.5f);
                 }
             }
         }
@@ -368,7 +391,7 @@ public class Player : MonoBehaviour
                     this.gameObject.transform.position = goingToPos;
                     rb.gravityScale = 1;
                     goingUpRight = false;
-                    IdleState();
+                    IdleState(0.5f);
                 }
             }
         }
@@ -409,7 +432,7 @@ public class Player : MonoBehaviour
         {
             goingDownRight = false;
             arrived = false;
-            IdleState();
+            IdleState(0.5f);
         }
     }
 
@@ -448,7 +471,7 @@ public class Player : MonoBehaviour
         {
             goingDownLeft = false;
             arrived = false;
-            IdleState();
+            IdleState(0.5f);
         }
     }
 
@@ -532,56 +555,58 @@ public class Player : MonoBehaviour
 
     #region MECHANICS METHODS
 
-    public void TryDrink()
+    void TryDrink()
     {
         RaycastHit2D[] drinkResults = new RaycastHit2D[1];
 
-        int drinks = rb.Cast(new Vector2(0.01f, 0f), drinkFilter, drinkResults);
+        int drinks = rb.Cast(new Vector2(1.0f, 0f), drinkFilter, drinkResults, drinkDistance);
 
         if(drinks > 0)
         {
-            if(drinkResults[0].collider.gameObject.transform.position.y > this.transform.position.y + 0.3f && !facingRight && snailingInRightWall)
+            if(!snailingInLeftWall && !snailingInRightWall)
             {
-                Flip();
-            }
-            if (drinkResults[0].collider.gameObject.transform.position.y < this.transform.position.y + 0.3f && facingRight && snailingInRightWall)
-            {
-                Flip();
-            }
+                float drinkPosX = drinkResults[0].collider.transform.position.x;
 
-            Destroy(drinkResults[0].collider.gameObject);
-            return;
-        }
-
-        drinks = rb.Cast(new Vector2(-0.01f, 0f), drinkFilter, drinkResults);
-
-        if(drinks > 0)
-        {
-            if(drinkResults[0].collider.gameObject.transform.position.y < this.transform.position.y + 0.3f && facingRight && snailingInLeftWall)
-            {
-                Flip();
-            }
-            if (drinkResults[0].collider.gameObject.transform.position.y > this.transform.position.y + 0.3f && !facingRight && snailingInLeftWall)
-            {
-                Flip();
+                if ((drinkPosX > this.transform.position.x) && !facingRight)
+                {
+                    Flip();
+                }
+                else if ((drinkPosX < this.transform.position.x) && facingRight)
+                {
+                    Flip();
+                }
             }
 
-            Destroy(drinkResults[0].collider.gameObject);
-            return;
-        }
-
-        drinks = rb.Cast(new Vector2(0f, -0.01f), drinkFilter, drinkResults);
-
-        if(drinks > 0)
-        {
-            if (drinkResults[0].collider.gameObject.transform.position.x < this.transform.position.x && facingRight)
+            if (snailingInRightWall)
             {
-                Flip();
+                float drinkPosY = drinkResults[0].collider.transform.position.y;
+                float thisPosY = this.transform.position.y + 0.3f;
+
+                if ((drinkPosY > thisPosY) && !facingRight)
+                {
+                    Flip();
+                }
+                else if ((drinkPosY < thisPosY) && facingRight)
+                {
+                    Flip();
+                }
             }
-            else if (drinkResults[0].collider.gameObject.transform.position.x > this.transform.position.x && !facingRight)
+
+            if (snailingInLeftWall)
             {
-                Flip();
+                float drinkPosY = drinkResults[0].collider.transform.position.y;
+                float thisPosY = this.transform.position.y + 0.3f;
+
+                if ((drinkPosY > thisPosY) && facingRight)
+                {
+                    Flip();
+                }
+                else if ((drinkPosY < thisPosY) && !facingRight)
+                {
+                    Flip();
+                }
             }
+
             Destroy(drinkResults[0].collider.gameObject);
             return;
         }
@@ -599,9 +624,14 @@ public class Player : MonoBehaviour
 
     #region STATE METHODS
 
-    void IdleState()
+    void IdleState(float idleTime)
     {
-        currentPlayerState = PlayerState.Idle;
+        idleTime -= Time.deltaTime;
+
+        if(idleTime < 0)
+        {
+            currentPlayerState = PlayerState.Idle;
+        }
     }
 
     void MoveState()
@@ -614,7 +644,7 @@ public class Player : MonoBehaviour
         currentPlayerState = PlayerState.Spit;
     }
 
-    void DrinkState()
+    public void DrinkState()
     {
         currentPlayerState = PlayerState.Drink;
     }
