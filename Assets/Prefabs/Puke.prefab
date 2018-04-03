@@ -212,8 +212,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 903e16186aaa3244e81caeb306b29ebc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  pukeOnGroundObject: {fileID: 1806201473817202, guid: 22d17a55bf329c84d9364c986497fed6,
+  speed: 0
+  drinkObject: {fileID: 1806201473817202, guid: 22d17a55bf329c84d9364c986497fed6,
     type: 2}
 --- !u!212 &212184012716530010
 SpriteRenderer:
