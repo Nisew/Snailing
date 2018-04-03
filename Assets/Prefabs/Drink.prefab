@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4038011010330340}
   - component: {fileID: 61276880638731306}
+  - component: {fileID: 114362531329312808}
   m_Layer: 11
   m_Name: Drink
   m_TagString: Drink
@@ -34,7 +35,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1806201473817202}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.9595213, y: -2.0066957, z: 0.07609979}
+  m_LocalPosition: {x: -2.109139, y: -1.6050625, z: 0.07609979}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -65,3 +66,15 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.3, y: 0.06}
   m_EdgeRadius: 0
+--- !u!114 &114362531329312808
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1806201473817202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaff647a5c11225468761294d0b97654, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pukeObject: {fileID: 1599833667442584, guid: b63ec1d4c8d967848b95b218a7b3565b, type: 2}

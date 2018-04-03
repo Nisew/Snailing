@@ -51,6 +51,7 @@ public class Player : MonoBehaviour
     bool drinking;
     float drinkTime = 1;
     float drinkDistance = 0.01f;
+    float idleTime;
     bool facingRight = true;
 
     Vector2 goingToPos;
@@ -119,7 +120,12 @@ public class Player : MonoBehaviour
 
     void Idle()
     {
-        MoveState();
+        idleTime -= Time.deltaTime;
+
+        if (idleTime < 0)
+        {
+            MoveState();
+        }
     }
 
     void Move()
@@ -141,6 +147,7 @@ public class Player : MonoBehaviour
                 tile.transform.localRotation = Quaternion.Euler(0, 0, -90);
                 snailingInLeftWall = true;
                 rb.gravityScale = 0;
+                IdleState(0.5f);
             }
 
             if(inputScript.PressingLeft && !bottomUpWalled) //GOES DOWN TO RIGHT WALL
@@ -169,9 +176,10 @@ public class Player : MonoBehaviour
                 tile.transform.localRotation = Quaternion.Euler(0, 0, 90);
                 snailingInRightWall = true;
                 rb.gravityScale = 0;
+                IdleState(0.5f);
             }
 
-            if(inputScript.PressingRight && !bottomDownWalled) //GOES DOWN TO LEFT WALL
+            if (inputScript.PressingRight && !bottomDownWalled) //GOES DOWN TO LEFT WALL
             {
                 goingToPos = new Vector2(this.transform.position.x + 0.6f, this.transform.position.y - 1f);
                 tile.transform.localRotation = Quaternion.Euler(0, 0, -90);
@@ -219,9 +227,10 @@ public class Player : MonoBehaviour
                 snailingInLeftWall = false;
                 tile.transform.localRotation = Quaternion.Euler(0, 0, 0);
                 rb.gravityScale = 1;
+                IdleState(0.5f);
             }
 
-            if(inputScript.PressingSpace)
+            if (inputScript.PressingSpace)
             {
                 rb.gravityScale = 1;
                 rb.AddForce(new Vector2(1, 0), ForceMode2D.Impulse);
@@ -269,9 +278,10 @@ public class Player : MonoBehaviour
                 snailingInRightWall = false;
                 tile.transform.localRotation = Quaternion.Euler(0, 0, 0);
                 rb.gravityScale = 1;
+                IdleState(0.5f);
             }
 
-            if(inputScript.PressingSpace)
+            if (inputScript.PressingSpace)
             {
                 rb.gravityScale = 1;
                 rb.AddForce(new Vector2(-1, 0), ForceMode2D.Impulse);
@@ -624,14 +634,11 @@ public class Player : MonoBehaviour
 
     #region STATE METHODS
 
-    void IdleState(float idleTime)
+    void IdleState(float time)
     {
-        idleTime -= Time.deltaTime;
+        idleTime = time;
 
-        if(idleTime < 0)
-        {
-            currentPlayerState = PlayerState.Idle;
-        }
+        currentPlayerState = PlayerState.Idle;
     }
 
     void MoveState()

@@ -6,7 +6,7 @@ public class Puke : MonoBehaviour
 {
     Rigidbody2D rb;
     public float speed;
-    public GameObject pukeOnGroundObject;
+    public GameObject drinkObject;
 
     void Start ()
     {
@@ -20,7 +20,7 @@ public class Puke : MonoBehaviour
 
     void Update ()
     {
-		
+
 	}
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -31,23 +31,27 @@ public class Puke : MonoBehaviour
         {
             if(contacts[0].normal == Vector2.left)
             {
-                Instantiate(pukeOnGroundObject, new Vector2(this.transform.position.x + 0.05f, this.transform.position.y), Quaternion.Euler(0,0,-90));
+                drinkObject.GetComponent<Drink>().falling = false;
+                Instantiate(drinkObject, new Vector2(this.transform.position.x + 0.05f, this.transform.position.y), Quaternion.Euler(0,0,-90));
             }
             if(contacts[0].normal == Vector2.right)
             {
-                Instantiate(pukeOnGroundObject, new Vector2(this.transform.position.x - 0.05f, this.transform.position.y), Quaternion.Euler(0, 0, 90));
+                drinkObject.GetComponent<Drink>().falling = false;
+                Instantiate(drinkObject, new Vector2(this.transform.position.x - 0.05f, this.transform.position.y), Quaternion.Euler(0, 0, 90));
             }
             if(contacts[0].normal == Vector2.up)
             {
-                Instantiate(pukeOnGroundObject, new Vector2(this.transform.position.x, this.transform.position.y - 0.05f), Quaternion.Euler(0, 0, 0));
+                drinkObject.GetComponent<Drink>().falling = false;
+                Instantiate(drinkObject, new Vector2(this.transform.position.x, this.transform.position.y - 0.05f), Quaternion.Euler(0, 0, 0));
             }
             if(contacts[0].normal == Vector2.down)
             {
-                Instantiate(pukeOnGroundObject, new Vector2(this.transform.position.x, this.transform.position.y + 0.05f), Quaternion.Euler(0, 0, 180));
+                drinkObject.GetComponent<Drink>().falling = true;
+                Instantiate(drinkObject, new Vector2(this.transform.position.x, this.transform.position.y + 0.05f), Quaternion.Euler(0, 0, 180));
             }
             Destroy(this.gameObject);
         }
-
     }
 
+    //public float Speed { get { return speed; } set { speed = value; } }
 }
