@@ -5,7 +5,8 @@ using UnityEngine;
 public class Puke : MonoBehaviour
 {
     Rigidbody2D rb;
-    public float speed;
+    [SerializeField]
+    float speed;
     public GameObject drinkObject;
 
     void Start ()
@@ -31,27 +32,32 @@ public class Puke : MonoBehaviour
         {
             if(contacts[0].normal == Vector2.left)
             {
-                drinkObject.GetComponent<Drink>().falling = false;
+                drinkObject.GetComponent<Drink>().Falling = false;
                 Instantiate(drinkObject, new Vector2(this.transform.position.x + 0.05f, this.transform.position.y), Quaternion.Euler(0,0,-90));
             }
             if(contacts[0].normal == Vector2.right)
             {
-                drinkObject.GetComponent<Drink>().falling = false;
+                drinkObject.GetComponent<Drink>().Falling = false;
                 Instantiate(drinkObject, new Vector2(this.transform.position.x - 0.05f, this.transform.position.y), Quaternion.Euler(0, 0, 90));
             }
             if(contacts[0].normal == Vector2.up)
             {
-                drinkObject.GetComponent<Drink>().falling = false;
+                drinkObject.GetComponent<Drink>().Falling = false;
                 Instantiate(drinkObject, new Vector2(this.transform.position.x, this.transform.position.y - 0.05f), Quaternion.Euler(0, 0, 0));
             }
             if(contacts[0].normal == Vector2.down)
             {
-                drinkObject.GetComponent<Drink>().falling = true;
+                drinkObject.GetComponent<Drink>().Falling = true;
                 Instantiate(drinkObject, new Vector2(this.transform.position.x, this.transform.position.y + 0.05f), Quaternion.Euler(0, 0, 180));
             }
             Destroy(this.gameObject);
         }
+
+        if(collision.gameObject.layer == LayerMask.NameToLayer("Pukable") && contacts != null)
+        {
+
+        }
     }
 
-    //public float Speed { get { return speed; } set { speed = value; } }
+    public float Speed { get { return speed; } set { speed = value; } }
 }

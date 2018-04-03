@@ -49,7 +49,6 @@ public class Player : MonoBehaviour
     float maxPukeChare = 10;
     bool canDrink;
     bool drinking;
-    float drinkTime = 1;
     float drinkDistance = 0.01f;
     float idleTime;
     bool facingRight = true;
@@ -86,7 +85,6 @@ public class Player : MonoBehaviour
         LeftWallDetection();
         BottomWallDetection();
         RightWallDetection();
-
     }
 
     void Update ()
@@ -301,7 +299,7 @@ public class Player : MonoBehaviour
 
         if(Input.GetMouseButtonUp(0))
         {
-            puke.GetComponent<Puke>().speed = pukeCharge;
+            puke.GetComponent<Puke>().Speed = pukeCharge;
             Instantiate(puke, new Vector3(this.transform.position.x + 0.5f, this.transform.position.y + 0.8f, 0), new Quaternion(0, 0, 0, 0));
             pukeCharge = 0;
             IdleState(0.5f);
@@ -310,14 +308,8 @@ public class Player : MonoBehaviour
 
     void Drink()
     {
-        drinkTime -= Time.deltaTime;
-
-        if(drinkTime < 0)
-        {
-            drinkTime = 1;
-            TryDrink();
-            IdleState(0);
-        }
+        TryDrink();
+        IdleState(0);
     }
 
     void Dead()
