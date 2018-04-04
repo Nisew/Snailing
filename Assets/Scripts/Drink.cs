@@ -12,7 +12,7 @@ public class Drink : MonoBehaviour
 
 	void Start ()
     {
-		
+        
 	}
 
 	void Update ()

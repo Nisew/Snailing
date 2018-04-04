@@ -6,45 +6,46 @@ public class Player : MonoBehaviour
 {
     [Header("Game elements")]
     InputManager inputScript;
-    public GameObject puke;
+    [SerializeField] GameObject puke;
     GameObject tile;
     Rigidbody2D rb;
 
     [Header("Ground detection")]
-    public Vector2 topOrigin;
-    public float topDistance;
+    [SerializeField] Vector2 topOrigin;
+    [SerializeField] float topDistance;
 
-    public Vector2 leftUpOrigin;
-    public Vector2 leftDownOrigin;
-    public float leftDistance;
+    [SerializeField] Vector2 leftUpOrigin;
+    [SerializeField] Vector2 leftDownOrigin;
+    [SerializeField] float leftDistance;
 
-    public Vector2 bottomUpOrigin;
-    public Vector2 bottomDownOrigin;
-    public float bottomDistance;
+    [SerializeField] Vector2 bottomUpOrigin;
+    [SerializeField] Vector2 bottomDownOrigin;
+    [SerializeField] float bottomDistance;
 
-    public Vector2 rightUpOrigin;
-    public Vector2 rightDownOrigin;
-    public float rightDistance;
+    [SerializeField] Vector2 rightUpOrigin;
+    [SerializeField] Vector2 rightDownOrigin;
+    [SerializeField] float rightDistance;
 
-    public bool topWalled;
-    public bool leftUpWalled;
-    public bool leftDownWalled;
-    public bool rightUpWalled;
-    public bool rightDownWalled;
-    public bool bottomUpWalled;
-    public bool bottomDownWalled;
+    bool topWalled;
+    bool leftUpWalled;
+    bool leftDownWalled;
+    bool rightUpWalled;
+    bool rightDownWalled;
+    bool bottomUpWalled;
+    bool bottomDownWalled;
 
-    public bool snailingInLeftWall;
-    public bool snailingInRightWall;
+    bool snailingInLeftWall;
+    bool snailingInRightWall;
 
     RaycastHit2D[] rayHit = new RaycastHit2D[1];
     int numHits;
-    public ContactFilter2D contactFilter;
-    public ContactFilter2D drinkFilter;
+    [SerializeField] ContactFilter2D contactFilter;
+    [SerializeField] ContactFilter2D drinkFilter;
 
     [Header("Player properties")]
     float speed = 1;
     bool falling;
+    int numPukes;
     public float pukeCharge;
     float maxPukeChare = 10;
     bool canDrink;
@@ -609,6 +610,7 @@ public class Player : MonoBehaviour
                 }
             }
 
+            numPukes += drinkResults[0].collider.GetComponent<Drink>().Charge;
             Destroy(drinkResults[0].collider.gameObject);
             return;
         }

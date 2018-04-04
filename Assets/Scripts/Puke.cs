@@ -5,9 +5,8 @@ using UnityEngine;
 public class Puke : MonoBehaviour
 {
     Rigidbody2D rb;
-    [SerializeField]
-    float speed;
-    public GameObject drinkObject;
+    [SerializeField] float speed;
+    [SerializeField] GameObject drinkObject;
 
     void Start ()
     {
@@ -30,7 +29,9 @@ public class Puke : MonoBehaviour
 
         if(collision.gameObject.layer == LayerMask.NameToLayer("Ground") && contacts != null)
         {
-            if(contacts[0].normal == Vector2.left)
+            drinkObject.GetComponent<Drink>().Charge = 1;
+
+            if (contacts[0].normal == Vector2.left)
             {
                 drinkObject.GetComponent<Drink>().Falling = false;
                 Instantiate(drinkObject, new Vector2(this.transform.position.x + 0.05f, this.transform.position.y), Quaternion.Euler(0,0,-90));
@@ -55,7 +56,8 @@ public class Puke : MonoBehaviour
 
         if(collision.gameObject.layer == LayerMask.NameToLayer("Pukable") && contacts != null)
         {
-
+            contacts[0].collider.GetComponent<Pukable>().GetPuked();
+            Destroy(this.gameObject);
         }
     }
 
