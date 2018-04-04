@@ -8,6 +8,7 @@ public class Drink : MonoBehaviour
     bool falling;
     float fallingCounter = 4;
     public GameObject pukeObject;
+    int charge;
 
 	void Start ()
     {
@@ -30,5 +31,6 @@ public class Drink : MonoBehaviour
 	}
 
     public bool Falling { get { return falling; } set { falling = value; } }
+    public int Charge { get { return charge; } set { charge = value; } }
 
 }
