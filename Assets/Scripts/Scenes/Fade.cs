@@ -4,29 +4,64 @@ using UnityEngine;
 
 public class Fade : MonoBehaviour
 {
+    [SerializeField] bool startOpaque;
+    [SerializeField] float fadeTime;
+
+    float fadeCounter;
+    float alpha;
     bool transparent;
     bool fadeIn;
     bool fadeOut;
-
-    float counter = 2;
+    SpriteRenderer sprite;
 
     void Start ()
     {
-		
-	}
+        sprite = GetComponent<SpriteRenderer>();
+        fadeCounter = fadeTime;
+
+        if (startOpaque)
+        {
+            transparent = false;
+            sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, 1);
+        }
+        else
+        {
+            transparent = true;
+            sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, 0);
+        }
+    }
 	
 	void Update ()
     {
 		if(fadeIn)
         {
-            if(counter > 0)
+            if(fadeCounter > 0)
             {
-                counter -= Time.deltaTime;
+                fadeCounter -= Time.deltaTime;
+                alpha = Easing.ExpoEaseOut(fadeCounter, 1, -1, fadeTime);
+                sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, alpha);
             }
             else
             {
                 fadeIn = false;
-                counter = 2;
+                fadeCounter = fadeTime;
+                transparent = false;
+            }
+        }
+
+        if(fadeOut)
+        {
+            if (fadeCounter > 0)
+            {
+                fadeCounter -= Time.deltaTime;
+                alpha = Easing.ExpoEaseOut(fadeCounter, 0, 1, fadeTime);
+                sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, alpha);
+            }
+            else
+            {
+                fadeOut = false;
+                fadeCounter = fadeTime;
+                transparent = true;
             }
         }
 	}
