@@ -149,7 +149,23 @@ CompositeCollider2D:
   m_ColliderPaths:
   - m_Collider: {fileID: 1023457855}
     m_ColliderPaths:
-    - - X: -40000000
+    - - X: -90000000
+        Y: 20000000
+      - X: -90000000
+        Y: -50000000
+      - X: 50000000
+        Y: -50000000
+      - X: 50000000
+        Y: -80000000
+      - X: 120000000
+        Y: -80000000
+      - X: 120000000
+        Y: 10000000
+      - X: 50000000
+        Y: 10000000
+      - X: 50000000
+        Y: -20000000
+      - X: -40000000
         Y: -20000000
       - X: -40000000
         Y: 0
@@ -157,22 +173,6 @@ CompositeCollider2D:
         Y: 0
       - X: -30000000
         Y: 20000000
-      - X: -90000000
-        Y: 20000000
-      - X: -90000000
-        Y: -50000000
-      - X: 50000000
-        Y: -50000000
-      - X: 50000000
-        Y: -80000000
-      - X: 120000000
-        Y: -80000000
-      - X: 120000000
-        Y: 10000000
-      - X: 50000000
-        Y: 10000000
-      - X: 50000000
-        Y: -20000000
   m_CompositePaths:
     m_Paths:
     - - {x: 12, y: 1}
@@ -1672,9 +1672,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0, y: 0.36}
+  m_Offset: {x: 0, y: 0.5}
   serializedVersion: 2
-  m_Radius: 0.36
+  m_Radius: 0.5
 --- !u!114 &1121745469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1688,16 +1688,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   puke: {fileID: 1599833667442584, guid: b63ec1d4c8d967848b95b218a7b3565b, type: 2}
   topOrigin: {x: 0, y: 0.57}
-  topDistance: 0.28
+  topDistance: 0.46
   leftUpOrigin: {x: -0.27, y: 0.45}
   leftDownOrigin: {x: -0.27, y: 0.16}
-  leftDistance: 0.17
-  bottomUpOrigin: {x: -0.21, y: 0}
-  bottomDownOrigin: {x: 0.15, y: 0}
-  bottomDistance: 0.05
+  leftDistance: 0.235
+  bottomUpOrigin: {x: -0.21, y: 0.03}
+  bottomDownOrigin: {x: 0.15, y: 0.03}
+  bottomDistance: 0.035
   rightUpOrigin: {x: 0.27, y: 0.45}
   rightDownOrigin: {x: 0.27, y: 0.16}
-  rightDistance: 0.14
+  rightDistance: 0.23
   contactFilter:
     useTriggers: 0
     useLayerMask: 1
@@ -1735,7 +1735,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1121745467}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.5, y: -1.988, z: 0}
+  m_LocalPosition: {x: -1.496, y: -1.998, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1130081858}
