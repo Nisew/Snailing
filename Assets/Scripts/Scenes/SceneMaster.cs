@@ -10,8 +10,8 @@ public class SceneMaster : MonoBehaviour
     float counter = 5;
     bool oneTimeBool;
 
-    CurrentScene currentScene;
-    enum CurrentScene
+    public CurrentScene currentScene;
+    public enum CurrentScene
     {
         Logo,
         Title,
@@ -21,8 +21,10 @@ public class SceneMaster : MonoBehaviour
 
 	void Start ()
     {
-        DontDestroyOnLoad(this.gameObject);
-        logo = GameObject.Find("Logo").GetComponent<Fade>();
+        if(currentScene == CurrentScene.Logo)
+        {
+            logo = GameObject.Find("Logo").GetComponent<Fade>();
+        }
     }
 
 	void Update ()
@@ -115,6 +117,20 @@ public class SceneMaster : MonoBehaviour
     void EndingState()
     {
         currentScene = CurrentScene.Ending;
+    }
+
+    #endregion
+
+    #region SCENE CHANGE METHODS
+
+    public void GameplayScreen()
+    {
+        SceneManager.LoadScene(2);
+    }
+
+    public void CloseGame()
+    {
+        Application.Quit();
     }
 
     #endregion

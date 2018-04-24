@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Input
   - Drink
+  - Mushroom
   layers:
   - Default
   - TransparentFX

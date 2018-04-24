@@ -26,16 +26,16 @@ public class Player : MonoBehaviour
     [SerializeField] Vector2 rightDownOrigin;
     [SerializeField] float rightDistance;
 
-    bool topWalled;
-    bool leftUpWalled;
-    bool leftDownWalled;
-    bool rightUpWalled;
-    bool rightDownWalled;
-    bool bottomUpWalled;
-    bool bottomDownWalled;
+    public bool topWalled;
+    public bool leftUpWalled;
+    public bool leftDownWalled;
+    public bool rightUpWalled;
+    public bool rightDownWalled;
+    public bool bottomUpWalled;
+    public bool bottomDownWalled;
 
-    bool snailingInLeftWall;
-    bool snailingInRightWall;
+    public bool snailingInLeftWall;
+    public bool snailingInRightWall;
 
     RaycastHit2D[] rayHit = new RaycastHit2D[1];
     int numHits;
@@ -45,6 +45,14 @@ public class Player : MonoBehaviour
     [Header("Player properties")]
     float speed = 1;
     bool falling;
+
+    public Vector2 pukePointTopLeft;
+    public Vector2 pukePointTopRight;
+    public Vector2 pukePointLeftUp;
+    public Vector2 pukePointLeftDown;
+    public Vector2 pukePointRightUp;
+    public Vector2 pukePointRightDown;
+
     int numPukes;
     public float pukeCharge;
     float maxPukeChare = 10;
@@ -151,7 +159,7 @@ public class Player : MonoBehaviour
 
             if(inputScript.PressingLeft && !bottomUpWalled) //GOES DOWN TO RIGHT WALL
             {
-                goingToPos = new Vector2(this.transform.position.x - 0.7f, this.transform.position.y - 1f);
+                goingToPos = new Vector2(this.transform.position.x - 0.75f, this.transform.position.y - 1f);
                 tile.transform.localRotation = Quaternion.Euler(0, 0, 90);
                 goingDownLeft = true;
                 snailingInRightWall = true;
@@ -180,7 +188,7 @@ public class Player : MonoBehaviour
 
             if (inputScript.PressingRight && !bottomDownWalled) //GOES DOWN TO LEFT WALL
             {
-                goingToPos = new Vector2(this.transform.position.x + 0.6f, this.transform.position.y - 1f);
+                goingToPos = new Vector2(this.transform.position.x + 0.75f, this.transform.position.y - 1f);
                 tile.transform.localRotation = Quaternion.Euler(0, 0, -90);
                 goingDownRight = true;
                 snailingInLeftWall = true;
@@ -191,7 +199,7 @@ public class Player : MonoBehaviour
 
         if(snailingInLeftWall)
         {
-            if(inputScript.PressingUp && leftUpWalled)
+            if(inputScript.PressingUp && leftUpWalled && !topWalled)
             {
                 if (facingRight) Flip();
 
@@ -242,7 +250,7 @@ public class Player : MonoBehaviour
 
         if(snailingInRightWall)
         {
-            if(inputScript.PressingUp && rightUpWalled)
+            if(inputScript.PressingUp && rightUpWalled && !topWalled)
             {
                 if (!facingRight) Flip();
 
@@ -298,11 +306,72 @@ public class Player : MonoBehaviour
 
         if(pukeCharge >= maxPukeChare) pukeCharge = maxPukeChare;
 
-        if(Input.GetMouseButtonUp(0))
+        Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        
+        if(!snailingInLeftWall && !snailingInRightWall)
+        {
+            if (worldPoint.x > transform.position.x && !facingRight)
+            {
+                Flip();
+            }
+            if (worldPoint.x < transform.position.x && facingRight)
+            {
+                Flip();
+            }
+        }
+        if(snailingInLeftWall)
+        {
+            if(worldPoint.y < transform.position.y + 0.5f && !facingRight)
+            {
+                Flip();
+            }
+            if (worldPoint.y > transform.position.y + 0.5f && facingRight)
+            {
+                Flip();
+            }
+        }
+        if (snailingInRightWall)
+        {
+            if (worldPoint.y > transform.position.y + 0.5f && !facingRight)
+            {
+                Flip();
+            }
+            if (worldPoint.y < transform.position.y + 0.5f && facingRight)
+            {
+                Flip();
+            }
+        }
+
+        if (Input.GetMouseButtonUp(0))
         {
             puke.GetComponent<Puke>().Speed = pukeCharge;
-            Instantiate(puke, new Vector3(this.transform.position.x + 0.5f, this.transform.position.y + 0.8f, 0), new Quaternion(0, 0, 0, 0));
             pukeCharge = 0;
+
+            if(!snailingInLeftWall && !snailingInRightWall && !facingRight)
+            {
+                Instantiate(puke, new Vector3(this.transform.position.x + pukePointTopLeft.x, this.transform.position.y + pukePointTopLeft.y, 0), new Quaternion(0, 0, 0, 0));
+            }
+            if (!snailingInLeftWall && !snailingInRightWall && facingRight)
+            {
+                Instantiate(puke, new Vector3(this.transform.position.x + pukePointTopRight.x, this.transform.position.y + pukePointTopRight.y, 0), new Quaternion(0, 0, 0, 0));
+            }
+            if (snailingInLeftWall && !facingRight)
+            {
+                Instantiate(puke, new Vector3(this.transform.position.x + pukePointRightUp.x, this.transform.position.y + pukePointRightUp.y, 0), new Quaternion(0, 0, 0, 0));
+            }
+            if (snailingInLeftWall && facingRight)
+            {
+                Instantiate(puke, new Vector3(this.transform.position.x + pukePointRightDown.x, this.transform.position.y + pukePointRightDown.y, 0), new Quaternion(0, 0, 0, 0));
+            }
+            if (snailingInRightWall && !facingRight)
+            {
+                Instantiate(puke, new Vector3(this.transform.position.x + pukePointLeftDown.x, this.transform.position.y + pukePointLeftDown.y, 0), new Quaternion(0, 0, 0, 0));
+            }
+            if (snailingInRightWall && facingRight)
+            {
+                Instantiate(puke, new Vector3(this.transform.position.x + pukePointLeftUp.x, this.transform.position.y + pukePointLeftUp.y, 0), new Quaternion(0, 0, 0, 0));
+            }
+
             IdleState(0.5f);
         }
     }
@@ -662,6 +731,26 @@ public class Player : MonoBehaviour
 
     #endregion
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.tag == "Mushroom")
+        {
+            if(falling)
+            {
+                Debug.Log(rb.velocity.y);
+
+                if (rb.velocity.y < -5)
+                {
+                    rb.AddForce(new Vector2(rb.velocity.x/2, -rb.velocity.y * 2), ForceMode2D.Impulse);
+                }
+                if (rb.velocity.y < -7)
+                {
+                    rb.AddForce(new Vector2(rb.velocity.x / 5, -rb.velocity.y/2), ForceMode2D.Impulse);
+                }
+            }
+        }
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
@@ -672,6 +761,12 @@ public class Player : MonoBehaviour
         Gizmos.DrawRay(new Vector2(this.transform.position.x + bottomDownOrigin.x, this.transform.position.y + bottomDownOrigin.y), new Vector2(0, -bottomDistance));
         Gizmos.DrawRay(new Vector2(this.transform.position.x + rightUpOrigin.x, this.transform.position.y + rightUpOrigin.y), new Vector2(rightDistance, 0));
         Gizmos.DrawRay(new Vector2(this.transform.position.x + rightDownOrigin.x, this.transform.position.y + rightDownOrigin.y), new Vector2(rightDistance, 0));
+        Gizmos.DrawIcon(new Vector2(this.transform.position.x + pukePointTopLeft.x, this.transform.position.y + pukePointTopLeft.y), "");
+        Gizmos.DrawIcon(new Vector2(this.transform.position.x + pukePointTopRight.x, this.transform.position.y + pukePointTopRight.y), "");
+        Gizmos.DrawIcon(new Vector2(this.transform.position.x + pukePointLeftUp.x, this.transform.position.y + pukePointLeftUp.y), "");
+        Gizmos.DrawIcon(new Vector2(this.transform.position.x + pukePointLeftDown.x, this.transform.position.y + pukePointLeftDown.y), "");
+        Gizmos.DrawIcon(new Vector2(this.transform.position.x + pukePointRightUp.x, this.transform.position.y + pukePointRightUp.y), "");
+        Gizmos.DrawIcon(new Vector2(this.transform.position.x + pukePointRightDown.x, this.transform.position.y + pukePointRightDown.y), "");
     }
 
 }
