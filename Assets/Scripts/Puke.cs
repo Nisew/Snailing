@@ -5,7 +5,7 @@ using UnityEngine;
 public class Puke : MonoBehaviour
 {
     Rigidbody2D rb;
-    [SerializeField] float speed;
+    [SerializeField] Vector2 speed;
     [SerializeField] GameObject drinkObject;
 
     void Start ()
@@ -15,13 +15,8 @@ public class Puke : MonoBehaviour
         Vector2 dir = worldPoint - (Vector2)this.transform.localPosition;
         dir.Normalize();
 
-        rb.AddForce(dir * speed, ForceMode2D.Impulse);
+        rb.AddForce(speed, ForceMode2D.Impulse);
     }
-
-    void Update ()
-    {
-
-	}
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -61,5 +56,5 @@ public class Puke : MonoBehaviour
         }
     }
 
-    public float Speed { get { return speed; } set { speed = value; } }
+    public Vector2 Speed { get { return speed; } set { speed = value; } }
 }

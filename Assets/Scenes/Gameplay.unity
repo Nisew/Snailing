@@ -1444,8 +1444,8 @@ Tilemap:
       m_ColliderType: 2
   - first: {x: 10, y: 0, z: 0}
     second:
-      m_TileIndex: 7
-      m_TileSpriteIndex: 7
+      m_TileIndex: 1
+      m_TileSpriteIndex: 1
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -1662,7 +1662,7 @@ Tilemap:
   m_TileAssetArray:
   - m_RefCount: 6
     m_Data: {fileID: 11400000, guid: c5b2fb96b7c020a4fa2c587ba2c42972, type: 2}
-  - m_RefCount: 2
+  - m_RefCount: 3
     m_Data: {fileID: 11400000, guid: ea13c7bee7bfe45498bae2647e509dd1, type: 2}
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: 9c9e10a5b9f018244be3276cc4243140, type: 2}
@@ -1674,7 +1674,7 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: dedd04fa5db5bb043ac89612d8923624, type: 2}
   - m_RefCount: 34
     m_Data: {fileID: 11400000, guid: 9823546d1d6756a43b00d1b001121572, type: 2}
-  - m_RefCount: 64
+  - m_RefCount: 63
     m_Data: {fileID: 11400000, guid: 615c7abb18a2705418097e48c4845349, type: 2}
   - m_RefCount: 8
     m_Data: {fileID: 11400000, guid: ca3e52b9db506344682c029494c8c92c, type: 2}
@@ -1695,7 +1695,7 @@ Tilemap:
   m_TileSpriteArray:
   - m_RefCount: 6
     m_Data: {fileID: 21300002, guid: 9f684d1555f25c64bb39fd61add0f2cd, type: 3}
-  - m_RefCount: 2
+  - m_RefCount: 3
     m_Data: {fileID: 21300054, guid: 9f684d1555f25c64bb39fd61add0f2cd, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: 21300006, guid: 9f684d1555f25c64bb39fd61add0f2cd, type: 3}
@@ -1707,7 +1707,7 @@ Tilemap:
     m_Data: {fileID: 21300010, guid: 9f684d1555f25c64bb39fd61add0f2cd, type: 3}
   - m_RefCount: 34
     m_Data: {fileID: 21300014, guid: 9f684d1555f25c64bb39fd61add0f2cd, type: 3}
-  - m_RefCount: 64
+  - m_RefCount: 63
     m_Data: {fileID: 21300020, guid: 9f684d1555f25c64bb39fd61add0f2cd, type: 3}
   - m_RefCount: 8
     m_Data: {fileID: 21300022, guid: 9f684d1555f25c64bb39fd61add0f2cd, type: 3}
@@ -1825,6 +1825,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1121745470}
   - component: {fileID: 1121745469}
+  - component: {fileID: 1121745472}
   - component: {fileID: 1121745471}
   - component: {fileID: 1121745468}
   m_Layer: 10
@@ -1924,7 +1925,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1121745467}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.33, y: -1.82, z: 0}
+  m_LocalPosition: {x: 0.88, y: -1.95, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1130081858}
@@ -1951,6 +1952,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!114 &1121745472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1121745467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2459c31611954641b63c8b65d431d8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TrajectoryPointPrefab: {fileID: 1873516372059292, guid: 3476dc745499c7d4c80fa27cdda2f34b,
+    type: 2}
 --- !u!1 &1130081857
 GameObject:
   m_ObjectHideFlags: 0

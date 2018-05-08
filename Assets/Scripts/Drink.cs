@@ -23,7 +23,7 @@ public class Drink : MonoBehaviour
 
             if(fallingCounter <= 0)
             {
-                pukeObject.GetComponent<Puke>().Speed = 0;
+                pukeObject.GetComponent<Puke>().Speed = Vector2.zero;
                 Instantiate(pukeObject, new Vector3(this.transform.position.x, this.transform.position.y - 0.2f, 0), new Quaternion(0, 0, 0, 0));
                 Destroy(this.gameObject);
             }

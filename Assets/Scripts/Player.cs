@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     [Header("Game elements")]
     InputManager inputScript;
     [SerializeField] GameObject puke;
+    PukePath pukePath;
     GameObject tile;
     Rigidbody2D rb;
 
@@ -83,6 +84,7 @@ public class Player : MonoBehaviour
 	void Start ()
     {
         inputScript = GameObject.FindGameObjectWithTag("Input").GetComponent<InputManager>();
+        pukePath = GetComponent<PukePath>();
         rb = GetComponent<Rigidbody2D>();
         tile = this.transform.GetChild(0).gameObject;
         IdleState(0f);
@@ -302,10 +304,6 @@ public class Player : MonoBehaviour
 
     void Spit()
     {
-        pukeCharge += Time.deltaTime * 10;
-
-        if(pukeCharge >= maxPukeChare) pukeCharge = maxPukeChare;
-
         Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         
         if(!snailingInLeftWall && !snailingInRightWall)
@@ -342,35 +340,14 @@ public class Player : MonoBehaviour
             }
         }
 
+        pukePath.DrawProjectileTrajectory();
+
         if (Input.GetMouseButtonUp(0))
         {
-            puke.GetComponent<Puke>().Speed = pukeCharge;
+            puke.GetComponent<Puke>().Speed = pukePath.GetForceFrom(GetPukePoint(), Camera.main.ScreenToWorldPoint(Input.mousePosition));
             pukeCharge = 0;
 
-            if(!snailingInLeftWall && !snailingInRightWall && !facingRight)
-            {
-                Instantiate(puke, new Vector3(this.transform.position.x + pukePointTopLeft.x, this.transform.position.y + pukePointTopLeft.y, 0), new Quaternion(0, 0, 0, 0));
-            }
-            if (!snailingInLeftWall && !snailingInRightWall && facingRight)
-            {
-                Instantiate(puke, new Vector3(this.transform.position.x + pukePointTopRight.x, this.transform.position.y + pukePointTopRight.y, 0), new Quaternion(0, 0, 0, 0));
-            }
-            if (snailingInLeftWall && !facingRight)
-            {
-                Instantiate(puke, new Vector3(this.transform.position.x + pukePointRightUp.x, this.transform.position.y + pukePointRightUp.y, 0), new Quaternion(0, 0, 0, 0));
-            }
-            if (snailingInLeftWall && facingRight)
-            {
-                Instantiate(puke, new Vector3(this.transform.position.x + pukePointRightDown.x, this.transform.position.y + pukePointRightDown.y, 0), new Quaternion(0, 0, 0, 0));
-            }
-            if (snailingInRightWall && !facingRight)
-            {
-                Instantiate(puke, new Vector3(this.transform.position.x + pukePointLeftDown.x, this.transform.position.y + pukePointLeftDown.y, 0), new Quaternion(0, 0, 0, 0));
-            }
-            if (snailingInRightWall && facingRight)
-            {
-                Instantiate(puke, new Vector3(this.transform.position.x + pukePointLeftUp.x, this.transform.position.y + pukePointLeftUp.y, 0), new Quaternion(0, 0, 0, 0));
-            }
+            Instantiate(puke, GetPukePoint(), new Quaternion(0, 0, 0, 0));
 
             IdleState(0.5f);
         }
@@ -749,6 +726,38 @@ public class Player : MonoBehaviour
                 }
             }
         }
+    }
+
+    public Vector2 GetPukePoint()
+    {
+        Vector2 pukePoint = Vector2.zero;
+
+        if (!snailingInLeftWall && !snailingInRightWall && !facingRight)
+        {
+            pukePoint = new Vector2(this.transform.position.x + pukePointTopLeft.x, this.transform.position.y + pukePointTopLeft.y);
+        }
+        if (!snailingInLeftWall && !snailingInRightWall && facingRight)
+        {
+            pukePoint = new Vector2(this.transform.position.x + pukePointTopRight.x, this.transform.position.y + pukePointTopRight.y);
+        }
+        if (snailingInLeftWall && !facingRight)
+        {
+            pukePoint = new Vector2(this.transform.position.x + pukePointRightUp.x, this.transform.position.y + pukePointRightUp.y);
+        }
+        if (snailingInLeftWall && facingRight)
+        {
+            pukePoint = new Vector2(this.transform.position.x + pukePointRightDown.x, this.transform.position.y + pukePointRightDown.y);
+        }
+        if (snailingInRightWall && !facingRight)
+        {
+            pukePoint = new Vector2(this.transform.position.x + pukePointLeftDown.x, this.transform.position.y + pukePointLeftDown.y);
+        }
+        if (snailingInRightWall && facingRight)
+        {
+            pukePoint = new Vector2(this.transform.position.x + pukePointLeftUp.x, this.transform.position.y + pukePointLeftUp.y);
+        }
+
+        return pukePoint;
     }
 
     private void OnDrawGizmosSelected()
