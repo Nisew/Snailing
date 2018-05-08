@@ -344,6 +344,7 @@ public class Player : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
+            pukePath.DesactivateTrajectoryPoints();
             puke.GetComponent<Puke>().Speed = pukePath.GetForceFrom(GetPukePoint(), Camera.main.ScreenToWorldPoint(Input.mousePosition));
             pukeCharge = 0;
 

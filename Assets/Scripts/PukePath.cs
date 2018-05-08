@@ -9,7 +9,7 @@ public class PukePath : MonoBehaviour
 
     float power = 1.5f;
 
-    int numOfTrajectoryPoints = 30;
+    int numOfTrajectoryPoints = 15;
     List<GameObject> trajectoryPoints;
 
     void Start()
@@ -28,7 +28,7 @@ public class PukePath : MonoBehaviour
     public void DrawProjectileTrajectory()
     {
         Vector2 vel = GetForceFrom(player.GetPukePoint(), Camera.main.ScreenToWorldPoint(Input.mousePosition));
-        setTrajectoryPoints(player.GetPukePoint(), vel / 1);
+        SetTrajectoryPoints(player.GetPukePoint(), vel / 1);
     }
 
     public Vector2 GetForceFrom(Vector3 fromPos, Vector3 toPos)
@@ -36,13 +36,13 @@ public class PukePath : MonoBehaviour
         return (new Vector2(toPos.x, toPos.y) - new Vector2(fromPos.x, fromPos.y)) * power;
     }
 
-    void setTrajectoryPoints(Vector3 pStartPosition, Vector3 pVelocity)
+    void SetTrajectoryPoints(Vector3 pStartPosition, Vector3 pVelocity)
     {
         float velocity = Mathf.Sqrt((pVelocity.x * pVelocity.x) + (pVelocity.y * pVelocity.y));
         float angle = Mathf.Rad2Deg * (Mathf.Atan2(pVelocity.y, pVelocity.x));
         float fTime = 0;
 
-        fTime += 0.03f;
+        fTime += 0.05f;
         for (int i = 0; i < numOfTrajectoryPoints; i++)
         {
             float dx = velocity * fTime * Mathf.Cos(angle * Mathf.Deg2Rad);
@@ -51,7 +51,15 @@ public class PukePath : MonoBehaviour
             trajectoryPoints[i].transform.position = pos;
             trajectoryPoints[i].GetComponentInChildren<SpriteRenderer>().enabled = true;
             trajectoryPoints[i].transform.eulerAngles = new Vector3(0, 0, Mathf.Atan2(pVelocity.y - (Physics.gravity.magnitude) * fTime, pVelocity.x) * Mathf.Rad2Deg);
-            fTime += 0.03f;
+            fTime += 0.05f;
+        }
+    }
+
+    public void DesactivateTrajectoryPoints()
+    {
+        for(int i = 0; i < numOfTrajectoryPoints; i++)
+        {
+            trajectoryPoints[i].GetComponentInChildren<SpriteRenderer>().enabled = false;
         }
     }
 }

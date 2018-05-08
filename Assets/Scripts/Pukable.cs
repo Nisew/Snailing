@@ -23,7 +23,6 @@ public class Pukable : MonoBehaviour
     public void GetPuked()
     {
         lives--;
-        Debug.Log(lives);
 
         if(lives <= 0)
         {
@@ -33,10 +32,9 @@ public class Pukable : MonoBehaviour
 
     void MeltIntoDrink()
     {
-        Debug.Log("MELTED");
-
         if(drinkable)
         {
+            drink.GetComponent<Drink>().Falling = true;
             SpawnDrink();
         }
 
@@ -46,11 +44,6 @@ public class Pukable : MonoBehaviour
     void SpawnDrink()
     {
         drink.GetComponent<Drink>().Charge = pukeCharge;
-
-        if(onRoof)
-        {
-            drink.GetComponent<Drink>().Falling = true;
-        }
 
         Instantiate(drink, new Vector3(this.transform.position.x, this.transform.position.y, 0), new Quaternion(0, 0, 0, 0));
     }
