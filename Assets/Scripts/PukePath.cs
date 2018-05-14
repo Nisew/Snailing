@@ -28,6 +28,12 @@ public class PukePath : MonoBehaviour
     public void DrawProjectileTrajectory()
     {
         Vector2 vel = GetForceFrom(player.GetPukePoint(), Camera.main.ScreenToWorldPoint(Input.mousePosition));
+
+        if(vel.x >= 2) vel.x = 2;
+        if(vel.y >= 4) vel.y = 4;
+        if(vel.x <= -2) vel.x = -2;
+        if(vel.y <= -2.5f) vel.y = -2.5f;
+
         SetTrajectoryPoints(player.GetPukePoint(), vel / 1);
     }
 

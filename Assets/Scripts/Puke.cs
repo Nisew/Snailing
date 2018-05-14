@@ -15,6 +15,11 @@ public class Puke : MonoBehaviour
         Vector2 dir = worldPoint - (Vector2)this.transform.localPosition;
         dir.Normalize();
 
+        if(speed.x >= 2) speed.x = 2;
+        if(speed.y >= 4) speed.y = 4;
+        if(speed.x <= -2) speed.x = -2;
+        if(speed.y <= -2.5f) speed.y = -2.5f;
+
         rb.AddForce(speed, ForceMode2D.Impulse);
     }
 
@@ -29,12 +34,12 @@ public class Puke : MonoBehaviour
             if (contacts[0].normal == Vector2.left)
             {
                 drinkObject.GetComponent<Drink>().Falling = false;
-                Instantiate(drinkObject, new Vector2(this.transform.position.x + 0.05f, this.transform.position.y), Quaternion.Euler(0,0,-90));
+                Instantiate(drinkObject, new Vector2(this.transform.position.x + 0.05f, this.transform.position.y), Quaternion.Euler(0,0,90));
             }
             if(contacts[0].normal == Vector2.right)
             {
                 drinkObject.GetComponent<Drink>().Falling = false;
-                Instantiate(drinkObject, new Vector2(this.transform.position.x - 0.05f, this.transform.position.y), Quaternion.Euler(0, 0, 90));
+                Instantiate(drinkObject, new Vector2(this.transform.position.x - 0.05f, this.transform.position.y), Quaternion.Euler(0, 0, -90));
             }
             if(contacts[0].normal == Vector2.up)
             {

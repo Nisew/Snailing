@@ -773,8 +773,6 @@ public class Player : MonoBehaviour
         {
             if(falling)
             {
-                Debug.Log(rb.velocity.y);
-
                 if (rb.velocity.y < -5)
                 {
                     rb.AddForce(new Vector2(rb.velocity.x/2, -rb.velocity.y * 2), ForceMode2D.Impulse);

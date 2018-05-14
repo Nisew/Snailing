@@ -38,6 +38,7 @@ public class Pukable : MonoBehaviour
         if(drinkable)
         {
             drink.GetComponent<Drink>().Falling = true;
+            drink.GetComponent<Drink>().FallingTime = 0;
             SpawnDrink();
         }
 
