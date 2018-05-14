@@ -35,12 +35,18 @@ public class Player : MonoBehaviour
     public bool bottomUpWalled;
     public bool bottomDownWalled;
 
+    public bool obstacleInLeft;
+    public bool obstacleInRight;
+    public bool obstacleInUp;
+    public bool obstacleInDown;
+
     public bool snailingInLeftWall;
     public bool snailingInRightWall;
 
     RaycastHit2D[] rayHit = new RaycastHit2D[1];
     int numHits;
     [SerializeField] ContactFilter2D contactFilter;
+    [SerializeField] ContactFilter2D obstacleFilter;
     [SerializeField] ContactFilter2D drinkFilter;
 
     [Header("Player properties")]
@@ -96,6 +102,10 @@ public class Player : MonoBehaviour
         LeftWallDetection();
         BottomWallDetection();
         RightWallDetection();
+        UpObstacleDetection();
+        LeftObstacleDetection();
+        RightObstacleDetection();
+        DownObstacleDetection();
     }
 
     void Update ()
@@ -141,7 +151,7 @@ public class Player : MonoBehaviour
     {
         if(!snailingInLeftWall && !snailingInRightWall && (bottomUpWalled || bottomDownWalled))
         {
-            if(inputScript.PressingLeft && !leftUpWalled && bottomUpWalled) //MOVE LEFT
+            if(inputScript.PressingLeft && !leftUpWalled && bottomUpWalled && !obstacleInLeft) //MOVE LEFT
             {
                 if (facingRight) Flip();
                 Vector2 provisionalPos = this.transform.position;
@@ -169,7 +179,7 @@ public class Player : MonoBehaviour
                 FreezeState();
             }
 
-            if(inputScript.PressingRight && !rightUpWalled) //MOVE RIGHT
+            if(inputScript.PressingRight && !rightUpWalled && !obstacleInRight) //MOVE RIGHT
             {
                 if (!facingRight) Flip();
 
@@ -201,7 +211,7 @@ public class Player : MonoBehaviour
 
         if(snailingInLeftWall)
         {
-            if(inputScript.PressingUp && leftUpWalled && !topWalled)
+            if(inputScript.PressingUp && leftUpWalled && !topWalled && !obstacleInUp)
             {
                 if (facingRight) Flip();
 
@@ -220,7 +230,7 @@ public class Player : MonoBehaviour
                 FreezeState();
             }
 
-            if(inputScript.PressingDown && !bottomDownWalled)
+            if(inputScript.PressingDown && !bottomDownWalled && !obstacleInDown)
             {
                 if (!facingRight) Flip();
 
@@ -252,7 +262,7 @@ public class Player : MonoBehaviour
 
         if(snailingInRightWall)
         {
-            if(inputScript.PressingUp && rightUpWalled && !topWalled)
+            if(inputScript.PressingUp && rightUpWalled && !topWalled && !obstacleInUp)
             {
                 if (!facingRight) Flip();
 
@@ -271,7 +281,7 @@ public class Player : MonoBehaviour
                 FreezeState();
             }
 
-            if(inputScript.PressingDown && !bottomDownWalled)
+            if(inputScript.PressingDown && !bottomDownWalled && !obstacleInDown)
             {
                 if (facingRight) Flip();
 
@@ -538,7 +548,7 @@ public class Player : MonoBehaviour
         if(numHits > 0)
         {
             topWalled = true;
-        }        
+        }
     }
 
     void LeftWallDetection()
@@ -599,6 +609,54 @@ public class Player : MonoBehaviour
         {
             rightDownWalled = true;
         }
+    }
+
+    #endregion
+
+    #region OBSTACLE DETECTION METHODS
+
+    void UpObstacleDetection()
+    {
+        numHits = Physics2D.Raycast(this.transform.position, new Vector2(0, 1), obstacleFilter, rayHit, 1.1f);
+
+        if (numHits > 0)
+        {
+            obstacleInUp = true;
+        }
+        else obstacleInUp = false;
+    }
+
+    void LeftObstacleDetection()
+    {
+        numHits = Physics2D.Raycast(this.transform.position, new Vector2(-1, 0), obstacleFilter, rayHit, 0.55f);
+
+        if (numHits > 0)
+        {
+            obstacleInLeft = true;
+        }
+        else obstacleInLeft = false;
+    }
+
+    void DownObstacleDetection()
+    {
+        numHits = Physics2D.Raycast(this.transform.position, new Vector2(0, -1), obstacleFilter, rayHit, 0.1f);
+
+        if (numHits > 0)
+        {
+            obstacleInDown = true;
+        }
+        else obstacleInDown = false;
+    }
+
+    void RightObstacleDetection()
+    {
+        numHits = Physics2D.Raycast(this.transform.position, new Vector2(1, 0), obstacleFilter, rayHit, 0.55f);
+
+        if (numHits > 0)
+        {
+            obstacleInRight = true;
+        }
+        else obstacleInRight = false;
     }
 
     #endregion

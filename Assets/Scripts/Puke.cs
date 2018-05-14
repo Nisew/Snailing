@@ -54,6 +54,12 @@ public class Puke : MonoBehaviour
             contacts[0].collider.GetComponent<Pukable>().GetPuked();
             Destroy(this.gameObject);
         }
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Obstacle") && contacts != null)
+        {
+            contacts[0].collider.GetComponent<Pukable>().GetPuked();
+            Destroy(this.gameObject);
+        }
+
     }
 
     public Vector2 Speed { get { return speed; } set { speed = value; } }

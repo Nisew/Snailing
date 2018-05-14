@@ -10,9 +10,11 @@ public class Pukable : MonoBehaviour
     [SerializeField] int pukeCharge;
     [SerializeField] GameObject drink;
 
+    Animator anim;
+
 	void Start ()
     {
-		
+        anim = GetComponentInChildren<Animator>();
 	}
 	
 	void Update ()
@@ -23,6 +25,7 @@ public class Pukable : MonoBehaviour
     public void GetPuked()
     {
         lives--;
+        anim.SetTrigger("Puked");
 
         if(lives <= 0)
         {
