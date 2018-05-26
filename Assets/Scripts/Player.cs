@@ -51,7 +51,7 @@ public class Player : MonoBehaviour
 
     [Header("Player properties")]
     float speed = 1;
-    bool falling;
+    public bool falling;
 
     public Vector2 pukePointTopLeft;
     public Vector2 pukePointTopRight;
@@ -729,6 +729,12 @@ public class Player : MonoBehaviour
         facingRight = !facingRight;
     }
 
+    public void ShroomJump(Vector2 force)
+    {
+        rb.velocity = Vector2.zero;
+        rb.AddForce(force, ForceMode2D.Impulse);
+    }
+
     #endregion
 
     #region STATE METHODS
@@ -767,24 +773,6 @@ public class Player : MonoBehaviour
 
     #endregion
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.tag == "Mushroom")
-        {
-            if(falling)
-            {
-                if (rb.velocity.y < -5)
-                {
-                    rb.AddForce(new Vector2(rb.velocity.x/2, -rb.velocity.y * 2), ForceMode2D.Impulse);
-                }
-                if (rb.velocity.y < -7)
-                {
-                    rb.AddForce(new Vector2(rb.velocity.x / 5, -rb.velocity.y/2), ForceMode2D.Impulse);
-                }
-            }
-        }
-    }
-
     public Vector2 GetPukePoint()
     {
         Vector2 pukePoint = Vector2.zero;
@@ -816,6 +804,8 @@ public class Player : MonoBehaviour
 
         return pukePoint;
     }
+    
+    
 
     private void OnDrawGizmosSelected()
     {
