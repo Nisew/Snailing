@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 96876928345070392}
   m_Layer: 9
   m_Name: Puke
-  m_TagString: Untagged
+  m_TagString: Puke
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -212,7 +212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 903e16186aaa3244e81caeb306b29ebc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: {x: 0.23999995, y: 4.912504}
+  speed: {x: -0.205832, y: 5.4449997}
   drinkObject: {fileID: 1806201473817202, guid: 22d17a55bf329c84d9364c986497fed6,
     type: 2}
 --- !u!212 &212184012716530010

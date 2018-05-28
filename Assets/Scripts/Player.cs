@@ -50,7 +50,7 @@ public class Player : MonoBehaviour
     [SerializeField] ContactFilter2D drinkFilter;
 
     [Header("Player properties")]
-    float speed = 1;
+    float speed = 2;
     public bool falling;
 
     public Vector2 pukePointTopLeft;
@@ -223,14 +223,14 @@ public class Player : MonoBehaviour
             }
             else if(inputScript.PressingUp && !leftUpWalled) //GOES UP LEFT WALL
             {
-                goingToPos = new Vector2(this.transform.position.x - 1, this.transform.position.y + 0.5f);
+                goingToPos = new Vector2(this.transform.position.x - 1, this.transform.position.y + 1f);
                 tile.transform.localRotation = Quaternion.Euler(0, 0, 0);
                 goingUpLeft = true;
                 snailingInLeftWall = false;
                 FreezeState();
             }
 
-            if(inputScript.PressingDown && !bottomDownWalled && !obstacleInDown)
+            if(inputScript.PressingDown && !bottomDownWalled && !obstacleInDown && leftDownWalled)
             {
                 if (!facingRight) Flip();
 
@@ -274,14 +274,14 @@ public class Player : MonoBehaviour
             }
             else if(inputScript.PressingUp && !rightUpWalled) //GOES UP RIGHT WALL
             {
-                goingToPos = new Vector2(this.transform.position.x + 1, this.transform.position.y + 0.5f);
+                goingToPos = new Vector2(this.transform.position.x + 1, this.transform.position.y + 1f);
                 tile.transform.localRotation = Quaternion.Euler(0, 0, 0);
                 goingUpRight = true;
                 snailingInRightWall = false;
                 FreezeState();
             }
 
-            if(inputScript.PressingDown && !bottomDownWalled && !obstacleInDown)
+            if(inputScript.PressingDown && !bottomDownWalled && !obstacleInDown && rightDownWalled)
             {
                 if (facingRight) Flip();
 

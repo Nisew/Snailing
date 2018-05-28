@@ -53,7 +53,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1760947273447566}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.88, y: -1.95, z: 0}
+  m_LocalPosition: {x: 4.06, y: -1.56, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4807926356316196}
@@ -105,7 +105,7 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.5}
+  m_Offset: {x: 0, y: 0.55}
   serializedVersion: 2
   m_Radius: 0.5
 --- !u!114 &114755480921653730
@@ -125,8 +125,8 @@ MonoBehaviour:
   leftUpOrigin: {x: -0.27, y: 0.45}
   leftDownOrigin: {x: -0.27, y: 0.16}
   leftDistance: 0.235
-  bottomUpOrigin: {x: -0.21, y: 0.03}
-  bottomDownOrigin: {x: 0.15, y: 0.03}
+  bottomUpOrigin: {x: -0.21, y: 0.08}
+  bottomDownOrigin: {x: 0.15, y: 0.08}
   bottomDistance: 0.035
   rightUpOrigin: {x: 0.27, y: 0.45}
   rightDownOrigin: {x: 0.27, y: 0.16}
@@ -186,6 +186,7 @@ MonoBehaviour:
     maxDepth: 0
     minNormalAngle: 0
     maxNormalAngle: 0
+  falling: 0
   pukePointTopLeft: {x: -0.4, y: 0.65}
   pukePointTopRight: {x: 0.4, y: 0.65}
   pukePointLeftUp: {x: -0.15, y: 0.9}
@@ -193,7 +194,7 @@ MonoBehaviour:
   pukePointRightUp: {x: 0.15, y: 0.9}
   pukePointRightDown: {x: 0.15, y: 0.12}
   pukeCharge: 0
-  currentPlayerState: 0
+  currentPlayerState: 1
 --- !u!114 &114767430325093052
 MonoBehaviour:
   m_ObjectHideFlags: 1

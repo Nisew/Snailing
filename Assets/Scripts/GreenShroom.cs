@@ -19,5 +19,10 @@ public class GreenShroom : MonoBehaviour
         {
             anim.SetTrigger("Green");
         }
+        if(collision.tag == ("Puke"))
+        {
+            Destroy(this.gameObject);
+            Destroy(collision.gameObject);
+        }
     }
 }
