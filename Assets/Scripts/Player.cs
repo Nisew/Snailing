@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
     [Header("Game elements")]
     InputManager inputScript;
     [SerializeField] GameObject puke;
-    PukePath pukePath;
+    public PukePath pukePath;
     GameObject tile;
     Rigidbody2D rb;
 
@@ -365,13 +365,6 @@ public class Player : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             anim.SetTrigger("Puke");
-            pukePath.DesactivateTrajectoryPoints();
-            puke.GetComponent<Puke>().Speed = pukePath.GetForceFrom(GetPukePoint(), Camera.main.ScreenToWorldPoint(Input.mousePosition));
-            pukeCharge = 0;
-
-            Instantiate(puke, GetPukePoint(), new Quaternion(0, 0, 0, 0));
-
-            IdleState(0.5f);
         }
     }
 
@@ -745,6 +738,18 @@ public class Player : MonoBehaviour
         scaleX = scaleX * -1;
         tile.transform.localScale = new Vector3(scaleX, 1, 1);
         facingRight = !facingRight;
+    }
+
+    public void Puke()
+    {
+        pukePath.DesactivateTrajectoryPoints();
+
+        puke.GetComponent<Puke>().Speed = pukePath.GetForceFrom(GetPukePoint(), Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        pukeCharge = 0;
+
+        Instantiate(puke, GetPukePoint(), new Quaternion(0, 0, 0, 0));
+
+        IdleState(0.5f);
     }
 
     public void ShroomJump(Vector2 force)

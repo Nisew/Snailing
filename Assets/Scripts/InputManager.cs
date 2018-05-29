@@ -49,7 +49,10 @@ public class InputManager : MonoBehaviour
 
         if(Input.GetMouseButtonDown(0))
         {
-            player.SpitState();
+            if(!player.falling)
+            {
+                player.SpitState();
+            }
         }
 
         if(Input.GetKeyDown(KeyCode.Space))
