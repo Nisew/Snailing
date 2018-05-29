@@ -67,6 +67,7 @@ public class Player : MonoBehaviour
     bool drinking;
     float drinkDistance = 0.01f;
     float idleTime;
+    float snailWallTime = 0.4f;
     bool facingRight = true;
 
     Vector2 goingToPos;
@@ -75,6 +76,8 @@ public class Player : MonoBehaviour
     bool goingUpRight;
     bool goingDownRight;
     bool arrived;
+
+    Animator anim;
 
     public PlayerState currentPlayerState;
     public enum PlayerState
@@ -90,6 +93,7 @@ public class Player : MonoBehaviour
 	void Start ()
     {
         inputScript = GameObject.FindGameObjectWithTag("Input").GetComponent<InputManager>();
+        anim = GetComponentInChildren<Animator>();
         pukePath = GetComponent<PukePath>();
         rb = GetComponent<Rigidbody2D>();
         tile = this.transform.GetChild(0).gameObject;
@@ -110,6 +114,7 @@ public class Player : MonoBehaviour
 
     void Update ()
     {
+
         switch(currentPlayerState)
         {
             case PlayerState.Idle:
@@ -147,6 +152,7 @@ public class Player : MonoBehaviour
         }
     }
 
+
     void Move()
     {
         if(!snailingInLeftWall && !snailingInRightWall && (bottomUpWalled || bottomDownWalled))
@@ -163,7 +169,6 @@ public class Player : MonoBehaviour
             else if(inputScript.PressingLeft && leftUpWalled) //SNAIL LEFT WALL
             {
                 if (facingRight) Flip();
-                tile.transform.localRotation = Quaternion.Euler(0, 0, -90);
                 snailingInLeftWall = true;
                 rb.gravityScale = 0;
                 IdleState(0.5f);
@@ -171,6 +176,7 @@ public class Player : MonoBehaviour
 
             if(inputScript.PressingLeft && !bottomUpWalled) //GOES DOWN TO RIGHT WALL
             {
+                anim.SetBool("Falling", true);
                 goingToPos = new Vector2(this.transform.position.x - 0.75f, this.transform.position.y - 1f);
                 tile.transform.localRotation = Quaternion.Euler(0, 0, 90);
                 goingDownLeft = true;
@@ -192,14 +198,16 @@ public class Player : MonoBehaviour
             else if(inputScript.PressingRight && rightUpWalled) //SNAIL RIGHT WALL
             {
                 if (!facingRight) Flip();
-                tile.transform.localRotation = Quaternion.Euler(0, 0, 90);
                 snailingInRightWall = true;
+                tile.transform.localRotation = Quaternion.Euler(0, 0, 90);
+                anim.SetTrigger("SnailWall");
                 rb.gravityScale = 0;
                 IdleState(0.5f);
             }
 
             if (inputScript.PressingRight && !bottomDownWalled) //GOES DOWN TO LEFT WALL
             {
+                anim.SetBool("Falling", true);
                 goingToPos = new Vector2(this.transform.position.x + 0.75f, this.transform.position.y - 1f);
                 tile.transform.localRotation = Quaternion.Euler(0, 0, -90);
                 goingDownRight = true;
@@ -227,6 +235,7 @@ public class Player : MonoBehaviour
                 tile.transform.localRotation = Quaternion.Euler(0, 0, 0);
                 goingUpLeft = true;
                 snailingInLeftWall = false;
+                anim.SetBool("Falling", true);
                 FreezeState();
             }
 
@@ -244,7 +253,6 @@ public class Player : MonoBehaviour
             {
                 if (!facingRight) Flip();
                 snailingInLeftWall = false;
-                tile.transform.localRotation = Quaternion.Euler(0, 0, 0);
                 rb.gravityScale = 1;
                 IdleState(0.5f);
             }
@@ -256,6 +264,7 @@ public class Player : MonoBehaviour
                 tile.transform.localRotation = Quaternion.Euler(0, 0, 0);
                 snailingInLeftWall = false;
                 falling = true;
+                anim.SetBool("Falling", true);
                 FreezeState();
             }
         }
@@ -277,6 +286,7 @@ public class Player : MonoBehaviour
                 goingToPos = new Vector2(this.transform.position.x + 1, this.transform.position.y + 1f);
                 tile.transform.localRotation = Quaternion.Euler(0, 0, 0);
                 goingUpRight = true;
+                anim.SetBool("Falling", true);
                 snailingInRightWall = false;
                 FreezeState();
             }
@@ -295,7 +305,6 @@ public class Player : MonoBehaviour
             {
                 if (facingRight) Flip();
                 snailingInRightWall = false;
-                tile.transform.localRotation = Quaternion.Euler(0, 0, 0);
                 rb.gravityScale = 1;
                 IdleState(0.5f);
             }
@@ -307,6 +316,7 @@ public class Player : MonoBehaviour
                 tile.transform.localRotation = Quaternion.Euler(0, 0, 0);
                 snailingInRightWall = false;
                 falling = true;
+                anim.SetBool("Falling", true);
                 FreezeState();
             }
         }
@@ -354,6 +364,7 @@ public class Player : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
+            anim.SetTrigger("Puke");
             pukePath.DesactivateTrajectoryPoints();
             puke.GetComponent<Puke>().Speed = pukePath.GetForceFrom(GetPukePoint(), Camera.main.ScreenToWorldPoint(Input.mousePosition));
             pukeCharge = 0;
@@ -389,6 +400,7 @@ public class Player : MonoBehaviour
         {
            if(bottomUpWalled || bottomDownWalled)
            {
+                anim.SetBool("Falling", false);
                 falling = false;
                 IdleState(0.5f);
            }
@@ -421,6 +433,7 @@ public class Player : MonoBehaviour
                 {
                     this.gameObject.transform.position = goingToPos;
                     goingUpLeft = false;
+                    anim.SetBool("Falling", false);
                     rb.gravityScale = 1;
                     IdleState(0.5f);
                 }
@@ -451,6 +464,7 @@ public class Player : MonoBehaviour
                     this.gameObject.transform.position = goingToPos;
                     rb.gravityScale = 1;
                     goingUpRight = false;
+                    anim.SetBool("Falling", false);
                     IdleState(0.5f);
                 }
             }
@@ -478,6 +492,7 @@ public class Player : MonoBehaviour
                 if(this.transform.position.y <= goingToPos.y)
                 {
                     arrived = true;
+                    anim.SetBool("Falling", false);
                 }
             }
         }
@@ -492,6 +507,7 @@ public class Player : MonoBehaviour
         {
             goingDownRight = false;
             arrived = false;
+            anim.SetBool("Falling", false);
             IdleState(0.5f);
         }
     }
@@ -517,6 +533,7 @@ public class Player : MonoBehaviour
                 if (this.transform.position.y <= goingToPos.y)
                 {
                     arrived = true;
+                    anim.SetBool("Falling", false);
                 }
             }
         }
@@ -531,6 +548,7 @@ public class Player : MonoBehaviour
         {
             goingDownLeft = false;
             arrived = false;
+            anim.SetBool("Falling", false);
             IdleState(0.5f);
         }
     }
@@ -803,8 +821,7 @@ public class Player : MonoBehaviour
         }
 
         return pukePoint;
-    }
-    
+    }    
     
 
     private void OnDrawGizmosSelected()
