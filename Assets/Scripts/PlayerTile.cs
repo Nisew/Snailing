@@ -15,4 +15,9 @@ public class PlayerTile : MonoBehaviour
     {
         player.Puke();
     }
+
+    public void Drink()
+    {
+        player.TryDrink();
+    }
 }

@@ -65,7 +65,7 @@ public class Player : MonoBehaviour
     float maxPukeChare = 10;
     bool canDrink;
     bool drinking;
-    float drinkDistance = 0.01f;
+    float drinkDistance = 0.6f;
     float idleTime;
     float snailWallTime = 0.4f;
     bool facingRight = true;
@@ -370,8 +370,8 @@ public class Player : MonoBehaviour
 
     void Drink()
     {
-        TryDrink();
-        IdleState(0);
+        anim.SetTrigger("Drink");
+        IdleState(1.1f);
     }
 
     void Dead()
@@ -674,58 +674,31 @@ public class Player : MonoBehaviour
 
     #region MECHANICS METHODS
 
-    void TryDrink()
+    public void TryDrink()
     {
         RaycastHit2D[] drinkResults = new RaycastHit2D[1];
 
-        int drinks = rb.Cast(new Vector2(1.0f, 0f), drinkFilter, drinkResults, drinkDistance);
+        int drinks = 0;
 
-        if(drinks > 0)
+        if(facingRight && !snailingInLeftWall && !snailingInRightWall)
         {
-            if(!snailingInLeftWall && !snailingInRightWall)
-            {
-                float drinkPosX = drinkResults[0].collider.transform.position.x;
+            drinks = rb.Cast(new Vector2(1f, 0f), drinkFilter, drinkResults, drinkDistance);
+        }
+        if (!facingRight && !snailingInLeftWall && !snailingInRightWall)
+        {
+            drinks = rb.Cast(new Vector2(-1f, 0f), drinkFilter, drinkResults, drinkDistance);
+        }
+        if (facingRight && snailingInLeftWall || !facingRight && snailingInRightWall)
+        {
+            drinks = rb.Cast(new Vector2(0f, -1f), drinkFilter, drinkResults, drinkDistance);
+        }
+        if (!facingRight && snailingInLeftWall || facingRight && snailingInRightWall)
+        {
+            drinks = rb.Cast(new Vector2(0f, 1f), drinkFilter, drinkResults, drinkDistance);
+        }
 
-                if ((drinkPosX > this.transform.position.x) && !facingRight)
-                {
-                    Flip();
-                }
-                else if ((drinkPosX < this.transform.position.x) && facingRight)
-                {
-                    Flip();
-                }
-            }
-
-            if (snailingInRightWall)
-            {
-                float drinkPosY = drinkResults[0].collider.transform.position.y;
-                float thisPosY = this.transform.position.y + 0.3f;
-
-                if ((drinkPosY > thisPosY) && !facingRight)
-                {
-                    Flip();
-                }
-                else if ((drinkPosY < thisPosY) && facingRight)
-                {
-                    Flip();
-                }
-            }
-
-            if (snailingInLeftWall)
-            {
-                float drinkPosY = drinkResults[0].collider.transform.position.y;
-                float thisPosY = this.transform.position.y + 0.3f;
-
-                if ((drinkPosY > thisPosY) && facingRight)
-                {
-                    Flip();
-                }
-                else if ((drinkPosY < thisPosY) && !facingRight)
-                {
-                    Flip();
-                }
-            }
-
+        if (drinks > 0)
+        {
             numPukes += drinkResults[0].collider.GetComponent<Drink>().Charge;
             Destroy(drinkResults[0].collider.gameObject);
             return;
