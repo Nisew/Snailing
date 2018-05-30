@@ -170,6 +170,7 @@ public class Player : MonoBehaviour
             {
                 if (facingRight) Flip();
                 snailingInLeftWall = true;
+                anim.SetTrigger("SnailWall");
                 rb.gravityScale = 0;
                 IdleState(0.5f);
             }
@@ -178,7 +179,6 @@ public class Player : MonoBehaviour
             {
                 anim.SetBool("Falling", true);
                 goingToPos = new Vector2(this.transform.position.x - 0.75f, this.transform.position.y - 1f);
-                tile.transform.localRotation = Quaternion.Euler(0, 0, 90);
                 goingDownLeft = true;
                 snailingInRightWall = true;
                 rb.gravityScale = 0;
@@ -199,7 +199,6 @@ public class Player : MonoBehaviour
             {
                 if (!facingRight) Flip();
                 snailingInRightWall = true;
-                tile.transform.localRotation = Quaternion.Euler(0, 0, 90);
                 anim.SetTrigger("SnailWall");
                 rb.gravityScale = 0;
                 IdleState(0.5f);
@@ -209,7 +208,6 @@ public class Player : MonoBehaviour
             {
                 anim.SetBool("Falling", true);
                 goingToPos = new Vector2(this.transform.position.x + 0.75f, this.transform.position.y - 1f);
-                tile.transform.localRotation = Quaternion.Euler(0, 0, -90);
                 goingDownRight = true;
                 snailingInLeftWall = true;
                 rb.gravityScale = 0;
@@ -232,7 +230,7 @@ public class Player : MonoBehaviour
             else if(inputScript.PressingUp && !leftUpWalled) //GOES UP LEFT WALL
             {
                 goingToPos = new Vector2(this.transform.position.x - 1, this.transform.position.y + 1f);
-                tile.transform.localRotation = Quaternion.Euler(0, 0, 0);
+                anim.SetTrigger("SnailWall");
                 goingUpLeft = true;
                 snailingInLeftWall = false;
                 anim.SetBool("Falling", true);
@@ -253,6 +251,7 @@ public class Player : MonoBehaviour
             {
                 if (!facingRight) Flip();
                 snailingInLeftWall = false;
+                anim.SetTrigger("SnailWall");
                 rb.gravityScale = 1;
                 IdleState(0.5f);
             }
@@ -284,7 +283,6 @@ public class Player : MonoBehaviour
             else if(inputScript.PressingUp && !rightUpWalled) //GOES UP RIGHT WALL
             {
                 goingToPos = new Vector2(this.transform.position.x + 1, this.transform.position.y + 1f);
-                tile.transform.localRotation = Quaternion.Euler(0, 0, 0);
                 goingUpRight = true;
                 anim.SetBool("Falling", true);
                 snailingInRightWall = false;
@@ -305,6 +303,7 @@ public class Player : MonoBehaviour
             {
                 if (facingRight) Flip();
                 snailingInRightWall = false;
+                anim.SetTrigger("SnailWall");
                 rb.gravityScale = 1;
                 IdleState(0.5f);
             }
@@ -313,8 +312,8 @@ public class Player : MonoBehaviour
             {
                 rb.gravityScale = 1;
                 rb.AddForce(new Vector2(-1, 0), ForceMode2D.Impulse);
-                tile.transform.localRotation = Quaternion.Euler(0, 0, 0);
                 snailingInRightWall = false;
+                tile.transform.localRotation = Quaternion.Euler(0, 0, 0);
                 falling = true;
                 anim.SetBool("Falling", true);
                 FreezeState();
@@ -426,6 +425,7 @@ public class Player : MonoBehaviour
                 {
                     this.gameObject.transform.position = goingToPos;
                     goingUpLeft = false;
+                    tile.transform.localRotation = Quaternion.Euler(0, 0, 0);
                     anim.SetBool("Falling", false);
                     rb.gravityScale = 1;
                     IdleState(0.5f);
@@ -456,6 +456,7 @@ public class Player : MonoBehaviour
                 {
                     this.gameObject.transform.position = goingToPos;
                     rb.gravityScale = 1;
+                    tile.transform.localRotation = Quaternion.Euler(0, 0, 0);
                     goingUpRight = false;
                     anim.SetBool("Falling", false);
                     IdleState(0.5f);
@@ -485,6 +486,7 @@ public class Player : MonoBehaviour
                 if(this.transform.position.y <= goingToPos.y)
                 {
                     arrived = true;
+                    Rotate();
                     anim.SetBool("Falling", false);
                 }
             }
@@ -501,6 +503,7 @@ public class Player : MonoBehaviour
             goingDownRight = false;
             arrived = false;
             anim.SetBool("Falling", false);
+            Rotate();
             IdleState(0.5f);
         }
     }
@@ -526,6 +529,7 @@ public class Player : MonoBehaviour
                 if (this.transform.position.y <= goingToPos.y)
                 {
                     arrived = true;
+                    Rotate();
                     anim.SetBool("Falling", false);
                 }
             }
@@ -541,6 +545,7 @@ public class Player : MonoBehaviour
         {
             goingDownLeft = false;
             arrived = false;
+            Rotate();
             anim.SetBool("Falling", false);
             IdleState(0.5f);
         }
@@ -734,6 +739,22 @@ public class Player : MonoBehaviour
     public void Die()
     {
         DeadState();
+    }
+
+    public void Rotate()
+    {
+        if(!snailingInLeftWall && !snailingInRightWall)
+        {
+            tile.transform.localRotation = Quaternion.Euler(0, 0, 0);
+        }
+        if (snailingInLeftWall)
+        {
+            tile.transform.localRotation = Quaternion.Euler(0, 0, -90);
+        }
+        if (snailingInRightWall)
+        {
+            tile.transform.localRotation = Quaternion.Euler(0, 0, 90);
+        }
     }
 
     #endregion

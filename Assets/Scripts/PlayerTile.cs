@@ -20,4 +20,9 @@ public class PlayerTile : MonoBehaviour
     {
         player.TryDrink();
     }
+
+    public void Rotate()
+    {
+        player.Rotate();
+    }
 }
