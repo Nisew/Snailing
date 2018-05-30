@@ -6,6 +6,7 @@ public class Puke : MonoBehaviour
 {
     Rigidbody2D rb;
     [SerializeField] Vector2 speed;
+    public int pukeCharge;
     [SerializeField] GameObject drinkObject;
 
     void Start ()
@@ -34,21 +35,25 @@ public class Puke : MonoBehaviour
             if (contacts[0].normal == Vector2.left)
             {
                 drinkObject.GetComponent<Drink>().Falling = false;
+                drinkObject.GetComponent<Drink>().Charge = pukeCharge;
                 Instantiate(drinkObject, new Vector2(this.transform.position.x + 0.05f, this.transform.position.y), Quaternion.Euler(0,0,90));
             }
             if(contacts[0].normal == Vector2.right)
             {
                 drinkObject.GetComponent<Drink>().Falling = false;
+                drinkObject.GetComponent<Drink>().Charge = pukeCharge;
                 Instantiate(drinkObject, new Vector2(this.transform.position.x - 0.05f, this.transform.position.y), Quaternion.Euler(0, 0, -90));
             }
             if(contacts[0].normal == Vector2.up)
             {
                 drinkObject.GetComponent<Drink>().Falling = false;
+                drinkObject.GetComponent<Drink>().Charge = pukeCharge;
                 Instantiate(drinkObject, new Vector2(this.transform.position.x, this.transform.position.y - 0.05f), Quaternion.Euler(0, 0, 0));
             }
             if(contacts[0].normal == Vector2.down)
             {
                 drinkObject.GetComponent<Drink>().Falling = true;
+                drinkObject.GetComponent<Drink>().Charge = pukeCharge;
                 Instantiate(drinkObject, new Vector2(this.transform.position.x, this.transform.position.y + 0.05f), Quaternion.Euler(0, 0, 180));
             }
             Destroy(this.gameObject);

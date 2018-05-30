@@ -37,10 +37,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4530127555968838}
   - component: {fileID: 114597260739247516}
-  - component: {fileID: 58314686644522970}
   - component: {fileID: 50483753751493628}
+  - component: {fileID: 70525361078025366}
   m_Layer: 12
-  m_Name: Strawberry
+  m_Name: Red
   m_TagString: Fruit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -52,27 +52,27 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1897940954481122}
-  m_LocalRotation: {x: -0, y: -0, z: -0.47089484, w: 0.88218945}
-  m_LocalPosition: {x: -3.33, y: 2.4, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: 0.17176291, w: 0.98513836}
+  m_LocalPosition: {x: 9.63, y: 1.23, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4883924943717372}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -56.185}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 19.781}
 --- !u!4 &4883924943717372
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1567724271596454}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.38590598, w: 0.92253816}
   m_LocalPosition: {x: 0, y: 0.03, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4530127555968838}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -45.4}
 --- !u!50 &50483753751493628
 Rigidbody2D:
   serializedVersion: 4
@@ -93,8 +93,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &58314686644522970
-CircleCollider2D:
+--- !u!70 &70525361078025366
+CapsuleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -105,9 +105,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.33
+  m_Offset: {x: 0, y: 0.02}
+  m_Size: {x: 0.6, y: 0.35}
+  m_Direction: 1
 --- !u!95 &95009946370979200
 Animator:
   serializedVersion: 3
@@ -138,9 +138,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   drinkable: 1
   onRoof: 0
-  lives: 1
-  pukeCharge: 2
-  drink: {fileID: 1806201473817202, guid: 22d17a55bf329c84d9364c986497fed6, type: 2}
+  counter: 1
+  charge: 0
+  drink: {fileID: 1599833667442584, guid: b63ec1d4c8d967848b95b218a7b3565b, type: 2}
 --- !u!212 &212633351185340152
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -175,7 +175,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300002, guid: c7111d23f3fcdf04dad033679a7d0822, type: 3}
+  m_Sprite: {fileID: 21300006, guid: fabeb89d39c547d4eaf4f33792cd5683, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

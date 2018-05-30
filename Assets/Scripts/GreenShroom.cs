@@ -18,6 +18,7 @@ public class GreenShroom : MonoBehaviour
         if (collision.tag == ("Player"))
         {
             anim.SetTrigger("Green");
+            collision.gameObject.GetComponent<Player>().Die();
         }
         if(collision.tag == ("Puke"))
         {

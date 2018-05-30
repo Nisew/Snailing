@@ -6,8 +6,9 @@ public class Pukable : MonoBehaviour
 {
     [SerializeField] bool drinkable;
     [SerializeField] bool onRoof;
-    [SerializeField] int lives;
-    [SerializeField] int pukeCharge;
+    bool puked;
+    [SerializeField] float counter = 1;
+    [SerializeField] int charge;
     [SerializeField] GameObject drink;
 
     Animator anim;
@@ -15,30 +16,40 @@ public class Pukable : MonoBehaviour
 	void Start ()
     {
         anim = GetComponentInChildren<Animator>();
+
+        if(onRoof)
+        {
+            GetComponent<Rigidbody2D>().gravityScale = 0;
+        }
 	}
 	
 	void Update ()
     {
-		
+		if(puked)
+        {
+            counter -= Time.deltaTime;
+
+            if(counter <= 0)
+            {
+                MeltIntoDrink();
+            }
+        }
 	}
 
     public void GetPuked()
     {
-        lives--;
         anim.SetTrigger("Puked");
-
-        if(lives <= 0)
+        if (onRoof)
         {
-            MeltIntoDrink();
+            GetComponent<Rigidbody2D>().gravityScale = 1;
         }
+        puked = true;
     }
 
     void MeltIntoDrink()
     {
         if(drinkable)
         {
-            drink.GetComponent<Drink>().Falling = true;
-            drink.GetComponent<Drink>().FallingTime = 0;
             SpawnDrink();
         }
 
@@ -47,8 +58,8 @@ public class Pukable : MonoBehaviour
 
     void SpawnDrink()
     {
-        drink.GetComponent<Drink>().Charge = pukeCharge;
-
+        drink.GetComponent<Puke>().pukeCharge = charge;
+        drink.GetComponent<Puke>().Speed = Vector2.zero;
         Instantiate(drink, new Vector3(this.transform.position.x, this.transform.position.y, 0), new Quaternion(0, 0, 0, 0));
     }
 
