@@ -10,13 +10,16 @@ public class Enemy : MonoBehaviour
     float patrolTime;
     float counter;
     bool dead;
+    SpriteRenderer sprite;
     
     [SerializeField] GameObject drinkObject;
 
     void Start ()
     {
         counter = patrolTime;
-	}
+        sprite = GetComponentInChildren<SpriteRenderer>();
+
+    }
 	
 	void Update ()
     {
@@ -34,6 +37,7 @@ public class Enemy : MonoBehaviour
         if (counter <= 0)
         {
             speed *= -1;
+            Flip();
             counter = patrolTime;
         }
 
@@ -61,8 +65,20 @@ public class Enemy : MonoBehaviour
         }
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
-            Instantiate(drinkObject, new Vector2(this.transform.position.x, this.transform.position.y - (GetComponent<CircleCollider2D>().radius) + 0.02f), Quaternion.Euler(0, 0, 0));
+            Instantiate(drinkObject, new Vector2(this.transform.position.x, this.transform.position.y - (GetComponent<CapsuleCollider2D>().size.y/2) + 0.02f), Quaternion.Euler(0, 0, 0));
             Destroy(this.gameObject);
+        }
+    }
+
+    void Flip()
+    {
+        if(sprite.flipX)
+        {
+            sprite.flipX = false;
+        }
+        else
+        {
+            sprite.flipX = true;
         }
     }
 
