@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+	[SerializeField]
     float speed = 1;
     [SerializeField]
     float patrolTime;

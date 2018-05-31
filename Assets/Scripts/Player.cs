@@ -230,7 +230,6 @@ public class Player : MonoBehaviour
             else if(inputScript.PressingUp && !leftUpWalled) //GOES UP LEFT WALL
             {
                 goingToPos = new Vector2(this.transform.position.x - 1, this.transform.position.y + 1f);
-                anim.SetTrigger("SnailWall");
                 goingUpLeft = true;
                 snailingInLeftWall = false;
                 anim.SetBool("Falling", true);
