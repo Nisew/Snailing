@@ -38,6 +38,7 @@ GameObject:
   - component: {fileID: 4267224465000854}
   - component: {fileID: 212585380296785584}
   - component: {fileID: 95450095170573040}
+  - component: {fileID: 114098079426449154}
   m_Layer: 0
   m_Name: Tile
   m_TagString: Untagged
@@ -65,7 +66,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1421931410979678}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.31, y: -1.383, z: 0.034365654}
+  m_LocalPosition: {x: 0.45, y: -1.371, z: 0.034365654}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4267224465000854}
@@ -114,6 +115,17 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114098079426449154
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1549234132574316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b142bf4b89266ac40855cb502c15a9b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114528994814268380
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -127,8 +139,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   drinkable: 0
   onRoof: 0
-  lives: 2
-  pukeCharge: 0
+  counter: 10
+  charge: 0
   drink: {fileID: 0}
 --- !u!212 &212585380296785584
 SpriteRenderer:
@@ -164,7 +176,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300010, guid: c7111d23f3fcdf04dad033679a7d0822, type: 3}
+  m_Sprite: {fileID: 21300018, guid: 67a81b6a3a4784544b123ee2ed5941d6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

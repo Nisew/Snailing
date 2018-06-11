@@ -22,7 +22,8 @@ public class GreenShroom : MonoBehaviour
         }
         if(collision.tag == ("Puke"))
         {
-            Destroy(this.gameObject);
+            anim.SetTrigger("Puked");
+            GetComponent<BoxCollider2D>().enabled = false;
             Destroy(collision.gameObject);
         }
     }

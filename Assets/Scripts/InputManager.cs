@@ -19,54 +19,72 @@ public class InputManager : MonoBehaviour
 
 	void Update ()
     {
-        float vAxis = Input.GetAxisRaw("Vertical");
-        float hAxis = Input.GetAxisRaw("Horizontal");
-        bool spit = Input.GetButtonDown("Spit");
-
-        if (vAxis == 1)
+        if(player.currentPlayerState != Player.PlayerState.Dead)
         {
-            pressingUp = true;
-        }
-        else pressingUp = false;
+            float vAxis = Input.GetAxisRaw("Vertical");
+            float hAxis = Input.GetAxisRaw("Horizontal");
+            bool spit = Input.GetButtonDown("Spit");
 
-        if(hAxis == -1)
-        {
-            pressingLeft = true;
-        }
-        else pressingLeft = false;
-
-        if(vAxis == -1)
-        {
-            pressingDown = true;
-        }
-        else pressingDown = false;
-
-        if(hAxis == 1)
-        {
-            pressingRight = true;
-        }
-        else pressingRight = false;
-
-        if(Input.GetMouseButtonDown(0))
-        {
-            if(!player.falling)
+            if (vAxis == 1)
             {
-                player.SpitState();
+                pressingUp = true;
             }
-        }
+            else
+            {
+                pressingUp = false;
+            }
 
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            pressingSpace = true;
-        }
-        if(Input.GetKeyUp(KeyCode.Space))
-        {
-            pressingSpace = false;
-        }
+            if(hAxis == -1)
+            {
+                pressingLeft = true;
+            }
+            else
+            {
+                pressingLeft = false;
+            }
 
-        if(Input.GetKeyDown(KeyCode.F))
-        {
-            player.DrinkState();
+            if (vAxis == -1)
+            {
+                pressingDown = true;
+            }
+            else
+            {
+                pressingDown = false;
+            }
+
+            if (hAxis == 1)
+            {
+                pressingRight = true;
+            }
+            else
+            {
+                pressingRight = false;
+            }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                if(!player.falling)
+                {
+                    player.SpitState();
+                }
+            }
+
+            if(Input.GetKeyDown(KeyCode.Space))
+            {
+                pressingSpace = true;
+            }
+            if(Input.GetKeyUp(KeyCode.Space))
+            {
+                pressingSpace = false;
+            }
+
+            if(Input.GetMouseButtonDown(1))
+            {
+                if(player.currentPlayerState != Player.PlayerState.Idle)
+                {
+                    player.DrinkState();
+                }
+            }
         }
     }
 

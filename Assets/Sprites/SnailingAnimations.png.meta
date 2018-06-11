@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 9c0a0bdd16efa984c82dd2ad71763053
-timeCreated: 1527601789
+timeCreated: 1528724249
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -16,6 +16,24 @@ TextureImporter:
     21300018: SnailingAnimations_9
     21300020: SnailingAnimations_10
     21300022: SnailingAnimations_11
+    21300024: SnailingAnimations_12
+    21300026: SnailingAnimations_13
+    21300028: SnailingAnimations_14
+    21300030: SnailingAnimations_15
+    21300032: SnailingAnimations_16
+    21300034: SnailingAnimations_17
+    21300036: SnailingAnimations_18
+    21300038: SnailingAnimations_19
+    21300040: SnailingAnimations_20
+    21300042: SnailingAnimations_21
+    21300044: SnailingAnimations_22
+    21300046: SnailingAnimations_23
+    21300048: SnailingAnimations_24
+    21300050: SnailingAnimations_25
+    21300052: SnailingAnimations_26
+    21300054: SnailingAnimations_27
+    21300056: SnailingAnimations_28
+    21300058: SnailingAnimations_29
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -253,6 +271,258 @@ TextureImporter:
         height: 50
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: SnailingAnimations_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 155
+        width: 57
+        height: 44
+      alignment: 9
+      pivot: {x: 0.444998, y: 0.56850916}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: SnailingAnimations_13
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 155
+        width: 69
+        height: 39
+      alignment: 9
+      pivot: {x: 0.38129348, y: 0.64071107}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: SnailingAnimations_14
+      rect:
+        serializedVersion: 2
+        x: 138
+        y: 155
+        width: 68
+        height: 39
+      alignment: 9
+      pivot: {x: 0.38690096, y: 0.64192903}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: SnailingAnimations_15
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 155
+        width: 71
+        height: 39
+      alignment: 9
+      pivot: {x: 0.370244, y: 0.6417197}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: SnailingAnimations_16
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 111
+        width: 58
+        height: 44
+      alignment: 9
+      pivot: {x: 0.44986987, y: 0.569149}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: SnailingAnimations_17
+      rect:
+        serializedVersion: 2
+        x: 138
+        y: 111
+        width: 68
+        height: 38
+      alignment: 9
+      pivot: {x: 0.38298103, y: 0.65859944}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: SnailingAnimations_18
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 111
+        width: 69
+        height: 38
+      alignment: 9
+      pivot: {x: 0.37435094, y: 0.65899897}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: SnailingAnimations_19
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 111
+        width: 69
+        height: 39
+      alignment: 9
+      pivot: {x: 0.38246506, y: 0.6414799}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: SnailingAnimations_20
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 61
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: SnailingAnimations_21
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 61
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: SnailingAnimations_22
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 61
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: SnailingAnimations_23
+      rect:
+        serializedVersion: 2
+        x: 158
+        y: 61
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: SnailingAnimations_24
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 64
+        width: 51
+        height: 42
+      alignment: 9
+      pivot: {x: 0.49051383, y: 0.6195906}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: SnailingAnimations_25
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 19
+        width: 50
+        height: 42
+      alignment: 9
+      pivot: {x: 0.49963066, y: 0.5721065}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: SnailingAnimations_26
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 19
+        width: 49
+        height: 42
+      alignment: 9
+      pivot: {x: 0.4891977, y: 0.57143694}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: SnailingAnimations_27
+      rect:
+        serializedVersion: 2
+        x: 121
+        y: 11
+        width: 48
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: SnailingAnimations_28
+      rect:
+        serializedVersion: 2
+        x: 174
+        y: 11
+        width: 51
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: SnailingAnimations_29
+      rect:
+        serializedVersion: 2
+        x: 229
+        y: 12
+        width: 52
+        height: 52
+      alignment: 9
+      pivot: {x: 0.45647547, y: 0.4804328}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

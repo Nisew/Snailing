@@ -46,7 +46,7 @@ public class Pukable : MonoBehaviour
         puked = true;
     }
 
-    void MeltIntoDrink()
+    public void MeltIntoDrink()
     {
         if(drinkable)
         {
@@ -59,7 +59,7 @@ public class Pukable : MonoBehaviour
     void SpawnDrink()
     {
         drink.GetComponent<Puke>().pukeCharge = charge;
-        drink.GetComponent<Puke>().Speed = Vector2.zero;
+        drink.GetComponent<Puke>().Speed = GetComponent<Rigidbody2D>().velocity;
         Instantiate(drink, new Vector3(this.transform.position.x, this.transform.position.y, 0), new Quaternion(0, 0, 0, 0));
     }
 

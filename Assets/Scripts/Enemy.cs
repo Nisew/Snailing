@@ -59,6 +59,7 @@ public class Enemy : MonoBehaviour
         }
         if (collision.gameObject.layer == LayerMask.NameToLayer("Puke"))
         {
+            GetComponentInChildren<Animator>().SetTrigger("Die");
             Destroy(collision.gameObject);
             dead = true;
             GetComponent<Rigidbody2D>().gravityScale = 0.5f;

@@ -155,10 +155,13 @@ public class Player : MonoBehaviour
 
     void Move()
     {
-        if(!snailingInLeftWall && !snailingInRightWall && (bottomUpWalled || bottomDownWalled))
+        anim.SetBool("Walk", false);
+
+        if (!snailingInLeftWall && !snailingInRightWall && (bottomUpWalled || bottomDownWalled))
         {
             if(inputScript.PressingLeft && !leftUpWalled && bottomUpWalled && !obstacleInLeft) //MOVE LEFT
             {
+                anim.SetBool("Walk", true);
                 if (facingRight) Flip();
                 Vector2 provisionalPos = this.transform.position;
 
@@ -177,6 +180,8 @@ public class Player : MonoBehaviour
 
             if(inputScript.PressingLeft && !bottomUpWalled) //GOES DOWN TO RIGHT WALL
             {
+                anim.SetBool("Walk", false);
+
                 anim.SetBool("Falling", true);
                 goingToPos = new Vector2(this.transform.position.x - 0.75f, this.transform.position.y - 1f);
                 goingDownLeft = true;
@@ -187,6 +192,8 @@ public class Player : MonoBehaviour
 
             if(inputScript.PressingRight && !rightUpWalled && !obstacleInRight) //MOVE RIGHT
             {
+                anim.SetBool("Walk", true);
+
                 if (!facingRight) Flip();
 
                 Vector2 provisionalPos = this.transform.position;
@@ -206,6 +213,8 @@ public class Player : MonoBehaviour
 
             if (inputScript.PressingRight && !bottomDownWalled) //GOES DOWN TO LEFT WALL
             {
+                anim.SetBool("Walk", false);
+
                 anim.SetBool("Falling", true);
                 goingToPos = new Vector2(this.transform.position.x + 0.75f, this.transform.position.y - 1f);
                 goingDownRight = true;
@@ -219,6 +228,8 @@ public class Player : MonoBehaviour
         {
             if(inputScript.PressingUp && leftUpWalled && !topWalled && !obstacleInUp)
             {
+                anim.SetBool("Walk", true);
+
                 if (facingRight) Flip();
 
                 Vector2 provisionalPos = this.transform.position;
@@ -238,6 +249,8 @@ public class Player : MonoBehaviour
 
             if(inputScript.PressingDown && !bottomDownWalled && !obstacleInDown && leftDownWalled)
             {
+                anim.SetBool("Walk", true);
+
                 if (!facingRight) Flip();
 
                 Vector2 provisionalPos = this.transform.position;
@@ -271,6 +284,8 @@ public class Player : MonoBehaviour
         {
             if(inputScript.PressingUp && rightUpWalled && !topWalled && !obstacleInUp)
             {
+                anim.SetBool("Walk", true);
+
                 if (!facingRight) Flip();
 
                 Vector2 provisionalPos = this.transform.position;
@@ -290,6 +305,8 @@ public class Player : MonoBehaviour
 
             if(inputScript.PressingDown && !bottomDownWalled && !obstacleInDown && rightDownWalled)
             {
+                anim.SetBool("Walk", true);
+
                 if (facingRight) Flip();
 
                 Vector2 provisionalPos = this.transform.position;
@@ -404,10 +421,16 @@ public class Player : MonoBehaviour
 
     void GoToUpLeft()
     {
-        if(this.transform.position.y <= goingToPos.y)
+        if(this.transform.position.y >= goingToPos.y)
         {
             Vector2 provisionalPos = this.transform.position;
+            provisionalPos.y = goingToPos.y;
+            this.gameObject.transform.position = provisionalPos;
+        }
 
+        if (this.transform.position.y <= goingToPos.y)
+        {
+            Vector2 provisionalPos = this.transform.position;
             provisionalPos.y += Time.deltaTime*3;
 
             this.gameObject.transform.position = provisionalPos;
@@ -435,6 +458,13 @@ public class Player : MonoBehaviour
 
     void GoToUpRight()
     {
+        if(this.transform.position.y >= goingToPos.y)
+        {
+            Vector2 provisionalPos = this.transform.position;
+            provisionalPos.y = goingToPos.y;
+            this.gameObject.transform.position = provisionalPos;
+        }
+
         if(this.transform.position.y <= goingToPos.y)
         {
             Vector2 provisionalPos = this.transform.position;
@@ -704,7 +734,7 @@ public class Player : MonoBehaviour
         if (drinks > 0)
         {
             numPukes += drinkResults[0].collider.GetComponent<Drink>().Charge;
-            Destroy(drinkResults[0].collider.gameObject);
+            drinkResults[0].collider.gameObject.GetComponentInChildren<Animator>().SetTrigger("Drink");
             return;
         }
     }
@@ -738,6 +768,7 @@ public class Player : MonoBehaviour
     public void Die()
     {
         DeadState();
+        anim.SetTrigger("Die");
     }
 
     public void Rotate()
@@ -790,6 +821,20 @@ public class Player : MonoBehaviour
     void FreezeState()
     {
         currentPlayerState = PlayerState.Freeze;
+    }
+
+    #endregion
+
+    #region ANIMATION METHODS
+
+    public void Walking()
+    {
+        anim.SetBool("Walk", true);
+    }
+
+    public void NotWalking()
+    {
+        anim.SetBool("Walk", false);
     }
 
     #endregion
