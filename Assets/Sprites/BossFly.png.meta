@@ -1,12 +1,21 @@
 fileFormatVersion: 2
 guid: 24ac15d858bc75744b75609adab595a9
-timeCreated: 1527778072
+timeCreated: 1528818645
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: BossFly_0
     21300002: BossFly_1
     21300004: BossFly_2
+    21300006: BossFly_3
+    21300008: BossFly_4
+    21300010: BossFly_5
+    21300012: BossFly_6
+    21300014: BossFly_7
+    21300016: BossFly_8
+    21300018: BossFly_9
+    21300020: BossFly_10
+    21300022: BossFly_11
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -84,10 +93,10 @@ TextureImporter:
       name: BossFly_0
       rect:
         serializedVersion: 2
-        x: 8
-        y: 7
-        width: 83
-        height: 120
+        x: 1
+        y: 165
+        width: 128
+        height: 162
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -98,12 +107,12 @@ TextureImporter:
       name: BossFly_1
       rect:
         serializedVersion: 2
-        x: 128
-        y: 8
-        width: 98
-        height: 103
-      alignment: 9
-      pivot: {x: 0.41533068, y: 0.5263304}
+        x: 131
+        y: 165
+        width: 128
+        height: 162
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -112,12 +121,138 @@ TextureImporter:
       name: BossFly_2
       rect:
         serializedVersion: 2
-        x: 263
-        y: 7
-        width: 101
-        height: 72
-      alignment: 9
-      pivot: {x: 0.3820692, y: 0.7639358}
+        x: 261
+        y: 165
+        width: 128
+        height: 162
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: BossFly_3
+      rect:
+        serializedVersion: 2
+        x: 391
+        y: 165
+        width: 128
+        height: 162
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: BossFly_4
+      rect:
+        serializedVersion: 2
+        x: 521
+        y: 165
+        width: 128
+        height: 162
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: BossFly_5
+      rect:
+        serializedVersion: 2
+        x: 651
+        y: 165
+        width: 128
+        height: 162
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: BossFly_6
+      rect:
+        serializedVersion: 2
+        x: 651
+        y: 1
+        width: 128
+        height: 162
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: BossFly_7
+      rect:
+        serializedVersion: 2
+        x: 521
+        y: 1
+        width: 128
+        height: 162
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: BossFly_8
+      rect:
+        serializedVersion: 2
+        x: 391
+        y: 1
+        width: 128
+        height: 162
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: BossFly_9
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 1
+        width: 128
+        height: 162
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: BossFly_10
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 2
+        width: 128
+        height: 162
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: BossFly_11
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1
+        width: 128
+        height: 162
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

@@ -70,7 +70,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1760947273447566}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.06, y: -3.7014, z: 0}
+  m_LocalPosition: {x: 70.59, y: 2.84, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4378960773376628}
@@ -169,6 +169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   puke: {fileID: 1599833667442584, guid: b63ec1d4c8d967848b95b218a7b3565b, type: 2}
   pukePath: {fileID: 0}
+  pukeBar: {fileID: 0}
   topOrigin: {x: 0, y: 0.57}
   topDistance: 0.46
   leftUpOrigin: {x: -0.27, y: 0.75}
@@ -230,7 +231,7 @@ MonoBehaviour:
     useOutsideNormalAngle: 0
     layerMask:
       serializedVersion: 2
-      m_Bits: 2048
+      m_Bits: 34816
     minDepth: 0
     maxDepth: 0
     minNormalAngle: 0
@@ -242,6 +243,7 @@ MonoBehaviour:
   pukePointLeftDown: {x: -0.15, y: 0.12}
   pukePointRightUp: {x: 0.15, y: 0.9}
   pukePointRightDown: {x: 0.15, y: 0.12}
+  powered: 0
   pukeCharge: 0
   currentPlayerState: 1
 --- !u!114 &114767430325093052

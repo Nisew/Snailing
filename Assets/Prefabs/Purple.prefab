@@ -140,7 +140,7 @@ MonoBehaviour:
   drinkable: 1
   onRoof: 0
   counter: 1
-  charge: 0
+  charge: 2
   drink: {fileID: 1599833667442584, guid: b63ec1d4c8d967848b95b218a7b3565b, type: 2}
 --- !u!114 &114404361527068348
 MonoBehaviour:
@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b142bf4b89266ac40855cb502c15a9b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BigPuke: {fileID: 0}
 --- !u!212 &212021810457057580
 SpriteRenderer:
   m_ObjectHideFlags: 1

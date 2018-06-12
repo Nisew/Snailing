@@ -19,70 +19,73 @@ public class InputManager : MonoBehaviour
 
 	void Update ()
     {
-        if(player.currentPlayerState != Player.PlayerState.Dead)
+        if(!player.gameOver)
         {
-            float vAxis = Input.GetAxisRaw("Vertical");
-            float hAxis = Input.GetAxisRaw("Horizontal");
-            bool spit = Input.GetButtonDown("Spit");
+            if(player.currentPlayerState != Player.PlayerState.Dead)
+            {
+                float vAxis = Input.GetAxisRaw("Vertical");
+                float hAxis = Input.GetAxisRaw("Horizontal");
+                bool spit = Input.GetButtonDown("Spit");
 
-            if (vAxis == 1)
-            {
-                pressingUp = true;
-            }
-            else
-            {
-                pressingUp = false;
-            }
-
-            if(hAxis == -1)
-            {
-                pressingLeft = true;
-            }
-            else
-            {
-                pressingLeft = false;
-            }
-
-            if (vAxis == -1)
-            {
-                pressingDown = true;
-            }
-            else
-            {
-                pressingDown = false;
-            }
-
-            if (hAxis == 1)
-            {
-                pressingRight = true;
-            }
-            else
-            {
-                pressingRight = false;
-            }
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                if(!player.falling && player.currentPlayerState != Player.PlayerState.Idle)
+                if (vAxis == 1)
                 {
-                    player.SpitState();
+                    pressingUp = true;
                 }
-            }
-
-            if(Input.GetKeyDown(KeyCode.Space))
-            {
-                pressingSpace = true;
-            }
-            if(Input.GetKeyUp(KeyCode.Space))
-            {
-                pressingSpace = false;
-            }
-
-            if(Input.GetMouseButtonDown(1))
-            {
-                if(player.currentPlayerState != Player.PlayerState.Idle)
+                else
                 {
-                    player.DrinkState();
+                    pressingUp = false;
+                }
+
+                if(hAxis == -1)
+                {
+                    pressingLeft = true;
+                }
+                else
+                {
+                    pressingLeft = false;
+                }
+
+                if (vAxis == -1)
+                {
+                    pressingDown = true;
+                }
+                else
+                {
+                    pressingDown = false;
+                }
+
+                if (hAxis == 1)
+                {
+                    pressingRight = true;
+                }
+                else
+                {
+                    pressingRight = false;
+                }
+
+                if (Input.GetMouseButtonDown(0))
+                {
+                    if(!player.falling && player.currentPlayerState != Player.PlayerState.Idle && player.numPukes >= 1)
+                    {
+                        player.SpitState();
+                    }
+                }
+
+                if(Input.GetKeyDown(KeyCode.Space))
+                {
+                    pressingSpace = true;
+                }
+                if(Input.GetKeyUp(KeyCode.Space))
+                {
+                    pressingSpace = false;
+                }
+
+                if(Input.GetMouseButtonDown(1))
+                {
+                    if(player.currentPlayerState != Player.PlayerState.Idle)
+                    {
+                        player.DrinkState();
+                    }
                 }
             }
         }

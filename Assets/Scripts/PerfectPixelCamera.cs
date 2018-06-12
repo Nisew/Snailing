@@ -1,9 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace GGEZ
-{
-
 [
     ExecuteInEditMode,                                       // Run this script in edit mode so the preview window looks good
     RequireComponent (typeof(Camera)),                       // Only add this component if there is a camera
@@ -135,4 +132,7 @@ void LateUpdate ()
 
     }
 }
+
+namespace GGEZ
+{
 }

@@ -9,6 +9,9 @@ TagManager:
   - Mushroom
   - Fruit
   - Puke
+  - TriggerCamera
+  - Fly
+  - BigPuke
   layers:
   - Default
   - TransparentFX

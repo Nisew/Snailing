@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 70158377594308134}
   m_Layer: 14
   m_Name: Fly
-  m_TagString: Untagged
+  m_TagString: Fly
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -138,6 +138,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 1
   patrolTime: 5
+  followPlayer: 1
+  enemyTarget: {fileID: 0}
+  dead: 0
   drinkObject: {fileID: 1806201473817202, guid: 22d17a55bf329c84d9364c986497fed6,
     type: 2}
 --- !u!212 &212163317654201174

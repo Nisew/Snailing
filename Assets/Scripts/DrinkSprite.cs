@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class DrinkSprite : MonoBehaviour
 {
+    public GameObject BigPuke;
+
     public void Drinked()
     {
         Destroy(transform.parent.gameObject);
@@ -12,5 +14,10 @@ public class DrinkSprite : MonoBehaviour
     public void Melt()
     {
         GetComponentInParent<Pukable>().MeltIntoDrink();
+    }
+
+    public void SpawnBigPuke()
+    {
+        BigPuke.SetActive(true);
     }
 }

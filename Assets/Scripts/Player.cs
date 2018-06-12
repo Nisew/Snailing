@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     [SerializeField] GameObject puke;
     public PukePath pukePath;
     GameObject tile;
+    public PukeBar pukeBar;
     Rigidbody2D rb;
 
     [Header("Ground detection")]
@@ -60,7 +61,7 @@ public class Player : MonoBehaviour
     public Vector2 pukePointRightUp;
     public Vector2 pukePointRightDown;
 
-    int numPukes;
+    public int numPukes = 5;
     [SerializeField]
     public bool powered;
     bool poweredColor;
@@ -81,6 +82,7 @@ public class Player : MonoBehaviour
     bool goingUpRight;
     bool goingDownRight;
     bool arrived;
+    public bool gameOver;
 
     Animator anim;
 
@@ -103,6 +105,7 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         tile = this.transform.GetChild(0).gameObject;
         IdleState(0f);
+        pukeBar.ChangePukeBar(numPukes);
         playerColor = GetComponentInChildren<SpriteRenderer>().color;
 	}
 
@@ -401,7 +404,28 @@ public class Player : MonoBehaviour
 
     void Drink()
     {
+
         anim.SetTrigger("Drink");
+        
+        if(powered)
+        {
+            RaycastHit2D[] drinkResults = new RaycastHit2D[1];
+
+            int drinks = 0;
+
+            drinks = rb.Cast(new Vector2(1f, 0f), drinkFilter, drinkResults, drinkDistance);
+
+            if(drinks > 0)
+            {
+                if(drinkResults[0].collider.tag == "BigPuke")
+                {
+                    anim.SetTrigger("PermaDrink");
+                    FreezeState();
+                    gameOver = true;
+                }
+            }
+        }
+
         IdleState(1.1f);
     }
 
@@ -751,16 +775,26 @@ public class Player : MonoBehaviour
         {
             if(drinkResults[0].collider.gameObject.layer == 15)
             {
-                if(drinkResults[0].collider.gameObject.GetComponentInChildren<Plutonium>().melted)
-                drinkResults[0].collider.gameObject.GetComponentInChildren<Animator>().SetTrigger("Drink");
-                drinkResults[0].collider.gameObject.GetComponentInChildren<Plutonium>().drinked = true;
-                PowerUp();
+                if(!powered)
+                {
+                    if(drinkResults[0].collider.gameObject.GetComponentInChildren<Plutonium>().melted)
+                    {
+                        numPukes = 1;
+                        drinkResults[0].collider.gameObject.GetComponentInChildren<Animator>().SetTrigger("Drink");
+                        drinkResults[0].collider.gameObject.GetComponentInChildren<Plutonium>().drinked = true;
+                        PowerUp();
+                    }
+                }
             }
             else
             {
-                numPukes += drinkResults[0].collider.GetComponent<Drink>().Charge;
-                drinkResults[0].collider.gameObject.GetComponentInChildren<Animator>().SetTrigger("Drink");
-                return;
+                if(!powered)
+                {
+                    numPukes += drinkResults[0].collider.GetComponent<Drink>().Charge;
+                    if (numPukes > 10) numPukes = 10;
+                    pukeBar.ChangePukeBar(numPukes);
+                    drinkResults[0].collider.gameObject.GetComponentInChildren<Animator>().SetTrigger("Drink");
+                }
             }
         }
     }
@@ -768,6 +802,9 @@ public class Player : MonoBehaviour
     void PowerUp()
     {
         powered = true;
+        pukeBar.powered = true;
+        pukeBar.ChangePukeBar(10);
+        pukeCharge = 1;
     }
 
     void Flip()
@@ -782,9 +819,14 @@ public class Player : MonoBehaviour
     {
         pukePath.DesactivateTrajectoryPoints();
 
+        puke.GetComponent<Puke>().pukeCharge = 1;
         puke.GetComponent<Puke>().Speed = pukePath.GetForceFrom(GetPukePoint(), Camera.main.ScreenToWorldPoint(Input.mousePosition));
 
-        pukeCharge = 0;
+        if(!powered)
+        {
+            numPukes --;
+            pukeBar.ChangePukeBar(numPukes);
+        }
 
         Instantiate(puke, GetPukePoint(), new Quaternion(0, 0, 0, 0));
 
@@ -901,7 +943,23 @@ public class Player : MonoBehaviour
         }
 
         return pukePoint;
-    }        
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.tag == "TriggerCamera")
+        {
+            GameObject.Find("Camera").GetComponent<CameraFollow>().BossPosition();
+            rb.gravityScale = 1;
+            rb.AddForce(new Vector2(1, 0), ForceMode2D.Impulse);
+            tile.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            snailingInLeftWall = false;
+            falling = true;
+            anim.SetBool("Falling", true);
+            GameObject.Find("Boss").GetComponent<Boss>().active = true;
+            FreezeState();
+        }
+    }
 
     private void OnDrawGizmosSelected()
     {

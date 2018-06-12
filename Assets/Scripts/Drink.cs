@@ -9,6 +9,7 @@ public class Drink : MonoBehaviour
     [SerializeField]
     float fallingTime = 4;
     public GameObject pukeObject;
+    [SerializeField]
     int charge;
 
 	void Update ()

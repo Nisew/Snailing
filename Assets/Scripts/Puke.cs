@@ -6,6 +6,7 @@ public class Puke : MonoBehaviour
 {
     Rigidbody2D rb;
     [SerializeField] Vector2 speed;
+    [SerializeField]
     public int pukeCharge;
     Player player;
     [SerializeField] GameObject drinkObject;

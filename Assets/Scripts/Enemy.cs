@@ -8,8 +8,12 @@ public class Enemy : MonoBehaviour
     float speed = 1;
     [SerializeField]
     float patrolTime;
+    [SerializeField]
+    public bool followPlayer;
+    [SerializeField]
+    public Transform enemyTarget;
     float counter;
-    bool dead;
+    public bool dead;
     SpriteRenderer sprite;
     
     [SerializeField] GameObject drinkObject;
@@ -32,20 +36,38 @@ public class Enemy : MonoBehaviour
 
     void Patrol()
     {
-        counter -= Time.deltaTime;
-
-        if (counter <= 0)
+        if(!followPlayer)
         {
-            speed *= -1;
-            Flip();
-            counter = patrolTime;
+            counter -= Time.deltaTime;
+
+            if (counter <= 0)
+            {
+                speed *= -1;
+                Flip();
+                counter = patrolTime;
+            }
+
+            Vector2 provisionalPos = this.transform.position;
+
+            provisionalPos.x += speed * Time.deltaTime;
+
+            this.gameObject.transform.position = provisionalPos;
         }
+        else
+        {
+            float smooth = 1 * Time.deltaTime;
 
-        Vector2 provisionalPos = this.transform.position;
+            this.transform.position = Vector3.MoveTowards(this.transform.position, enemyTarget.position, smooth);
 
-        provisionalPos.x += speed * Time.deltaTime;
-
-        this.gameObject.transform.position = provisionalPos;
+            if(transform.position.x > enemyTarget.position.x && sprite.flipX == true)
+            {
+                Flip();
+            }
+            if (transform.position.x < enemyTarget.position.x && sprite.flipX == false)
+            {
+                Flip();
+            }
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -60,15 +82,28 @@ public class Enemy : MonoBehaviour
         if (collision.gameObject.layer == LayerMask.NameToLayer("Puke"))
         {
             GetComponentInChildren<Animator>().SetTrigger("Die");
-            Destroy(collision.gameObject);
+
+            if(!dead)
+            {
+                Destroy(collision.gameObject);
+            }
+
             dead = true;
-            GetComponent<Rigidbody2D>().gravityScale = 0.5f;
+            GetComponent<Rigidbody2D>().gravityScale = 0.7f;
         }
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
+            drinkObject.GetComponent<Drink>().Charge = 2;
             Instantiate(drinkObject, new Vector2(this.transform.position.x, this.transform.position.y - (GetComponent<CapsuleCollider2D>().size.y/2) + 0.02f), Quaternion.Euler(0, 0, 0));
             Destroy(this.gameObject);
         }
+    }
+
+    public void Die()
+    {
+        dead = true;
+        GetComponentInChildren<Animator>().SetTrigger("Die");
+        GetComponent<Rigidbody2D>().gravityScale = 0.7f;
     }
 
     void Flip()
