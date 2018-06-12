@@ -28,18 +28,37 @@ public class PukePath : MonoBehaviour
     public void DrawProjectileTrajectory()
     {
         Vector2 vel = GetForceFrom(player.GetPukePoint(), Camera.main.ScreenToWorldPoint(Input.mousePosition));
-
-        if(vel.x >= 2) vel.x = 2;
-        if(vel.y >= 4) vel.y = 4;
-        if(vel.x <= -2) vel.x = -2;
-        if(vel.y <= -2.5f) vel.y = -2.5f;
+        
+        if (player.powered)
+        {
+            if (vel.x >= 10) vel.x = 10;
+            if (vel.y >= 8) vel.y = 8;
+            if (vel.x <= -10) vel.x = -10;
+            if (vel.y <= -6) vel.y = -6;
+        }
+        else
+        {
+            if(vel.x >= 2) vel.x = 2;
+            if(vel.y >= 4) vel.y = 4;
+            if(vel.x <= -2) vel.x = -2;
+            if(vel.y <= -2.5f) vel.y = -2.5f;
+        }
 
         SetTrajectoryPoints(player.GetPukePoint(), vel / 1);
     }
 
     public Vector2 GetForceFrom(Vector3 fromPos, Vector3 toPos)
     {
-        return (new Vector2(toPos.x, toPos.y) - new Vector2(fromPos.x, fromPos.y)) * power;
+        Vector2 vectorToReturn;
+
+        vectorToReturn = (new Vector2(toPos.x, toPos.y) - new Vector2(fromPos.x, fromPos.y)) * power;
+
+        /*if(player.powered)
+        {
+            vectorToReturn = (new Vector2(toPos.x, toPos.y) - new Vector2(fromPos.x, fromPos.y)) * 5;
+        }*/
+
+        return vectorToReturn;
     }
 
     void SetTrajectoryPoints(Vector3 pStartPosition, Vector3 pVelocity)

@@ -63,7 +63,7 @@ public class InputManager : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
-                if(!player.falling)
+                if(!player.falling && player.currentPlayerState != Player.PlayerState.Idle)
                 {
                     player.SpitState();
                 }

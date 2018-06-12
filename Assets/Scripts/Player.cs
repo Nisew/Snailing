@@ -61,6 +61,10 @@ public class Player : MonoBehaviour
     public Vector2 pukePointRightDown;
 
     int numPukes;
+    [SerializeField]
+    public bool powered;
+    bool poweredColor;
+    float colorTime;
     public float pukeCharge;
     float maxPukeChare = 10;
     bool canDrink;
@@ -69,6 +73,7 @@ public class Player : MonoBehaviour
     float idleTime;
     float snailWallTime = 0.4f;
     bool facingRight = true;
+    Color playerColor;
 
     Vector2 goingToPos;
     bool goingUpLeft;
@@ -98,6 +103,7 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         tile = this.transform.GetChild(0).gameObject;
         IdleState(0f);
+        playerColor = GetComponentInChildren<SpriteRenderer>().color;
 	}
 
     void FixedUpdate()
@@ -114,6 +120,16 @@ public class Player : MonoBehaviour
 
     void Update ()
     {
+        if(powered && !poweredColor)
+        {
+            colorTime += Time.deltaTime;
+            playerColor = Color.Lerp(new Color(1, 1, 1, 1), new Color(1, 0.5f, 1, 1), colorTime);
+            GetComponentInChildren<SpriteRenderer>().color = playerColor;
+            if (colorTime >= 5)
+            {
+                poweredColor = true;
+            }
+        }
 
         switch(currentPlayerState)
         {
@@ -151,8 +167,7 @@ public class Player : MonoBehaviour
             MoveState();
         }
     }
-
-
+    
     void Move()
     {
         anim.SetBool("Walk", false);
@@ -380,6 +395,7 @@ public class Player : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             anim.SetTrigger("Puke");
+            IdleState(0.5f);
         }
     }
 
@@ -733,10 +749,25 @@ public class Player : MonoBehaviour
 
         if (drinks > 0)
         {
-            numPukes += drinkResults[0].collider.GetComponent<Drink>().Charge;
-            drinkResults[0].collider.gameObject.GetComponentInChildren<Animator>().SetTrigger("Drink");
-            return;
+            if(drinkResults[0].collider.gameObject.layer == 15)
+            {
+                if(drinkResults[0].collider.gameObject.GetComponentInChildren<Plutonium>().melted)
+                drinkResults[0].collider.gameObject.GetComponentInChildren<Animator>().SetTrigger("Drink");
+                drinkResults[0].collider.gameObject.GetComponentInChildren<Plutonium>().drinked = true;
+                PowerUp();
+            }
+            else
+            {
+                numPukes += drinkResults[0].collider.GetComponent<Drink>().Charge;
+                drinkResults[0].collider.gameObject.GetComponentInChildren<Animator>().SetTrigger("Drink");
+                return;
+            }
         }
+    }
+
+    void PowerUp()
+    {
+        powered = true;
     }
 
     void Flip()
@@ -752,11 +783,12 @@ public class Player : MonoBehaviour
         pukePath.DesactivateTrajectoryPoints();
 
         puke.GetComponent<Puke>().Speed = pukePath.GetForceFrom(GetPukePoint(), Camera.main.ScreenToWorldPoint(Input.mousePosition));
+
         pukeCharge = 0;
 
         Instantiate(puke, GetPukePoint(), new Quaternion(0, 0, 0, 0));
 
-        IdleState(0.5f);
+        IdleState(0.2f);
     }
 
     public void ShroomJump(Vector2 force)
@@ -869,8 +901,7 @@ public class Player : MonoBehaviour
         }
 
         return pukePoint;
-    }    
-    
+    }        
 
     private void OnDrawGizmosSelected()
     {
