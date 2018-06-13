@@ -15,6 +15,7 @@ public class Enemy : MonoBehaviour
     float counter;
     public bool dead;
     SpriteRenderer sprite;
+    PlaySound playSound;
     
     [SerializeField] GameObject drinkObject;
 
@@ -22,10 +23,10 @@ public class Enemy : MonoBehaviour
     {
         counter = patrolTime;
         sprite = GetComponentInChildren<SpriteRenderer>();
-
+        playSound = GameObject.Find("GameMaster").GetComponent<PlaySound>();
     }
-	
-	void Update ()
+
+    void Update ()
     {
         if (dead)
         {
@@ -94,6 +95,7 @@ public class Enemy : MonoBehaviour
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
             drinkObject.GetComponent<Drink>().Charge = 2;
+            playSound.Play(5, 1, Random.Range(0.8f, 1.2f));
             Instantiate(drinkObject, new Vector2(this.transform.position.x, this.transform.position.y - (GetComponent<CapsuleCollider2D>().size.y/2) + 0.02f), Quaternion.Euler(0, 0, 0));
             Destroy(this.gameObject);
         }

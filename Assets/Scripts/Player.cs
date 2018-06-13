@@ -11,6 +11,8 @@ public class Player : MonoBehaviour
     GameObject tile;
     public PukeBar pukeBar;
     Rigidbody2D rb;
+    PlaySound playSound;
+    public SceneMaster sceneM;
 
     [Header("Ground detection")]
     [SerializeField] Vector2 topOrigin;
@@ -107,7 +109,9 @@ public class Player : MonoBehaviour
         IdleState(0f);
         pukeBar.ChangePukeBar(numPukes);
         playerColor = GetComponentInChildren<SpriteRenderer>().color;
-	}
+        playSound = GameObject.Find("GameMaster").GetComponent<PlaySound>();
+
+    }
 
     void FixedUpdate()
     {
@@ -398,6 +402,7 @@ public class Player : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             anim.SetTrigger("Puke");
+            playSound.Play(2, 1, 1);
             IdleState(0.5f);
         }
     }
@@ -406,8 +411,9 @@ public class Player : MonoBehaviour
     {
 
         anim.SetTrigger("Drink");
-        
-        if(powered)
+        playSound.Play(1, 1, 1);
+
+        if (powered)
         {
             RaycastHit2D[] drinkResults = new RaycastHit2D[1];
 
@@ -422,6 +428,7 @@ public class Player : MonoBehaviour
                     anim.SetTrigger("PermaDrink");
                     FreezeState();
                     gameOver = true;
+                    sceneM.EndingScreen();
                 }
             }
         }
@@ -449,6 +456,7 @@ public class Player : MonoBehaviour
            if(bottomUpWalled || bottomDownWalled)
            {
                 anim.SetBool("Falling", false);
+                playSound.Play(7, 1, 1);
                 falling = false;
                 IdleState(0.5f);
            }
@@ -795,6 +803,10 @@ public class Player : MonoBehaviour
                     pukeBar.ChangePukeBar(numPukes);
                     drinkResults[0].collider.gameObject.GetComponentInChildren<Animator>().SetTrigger("Drink");
                 }
+                else
+                {
+                    drinkResults[0].collider.gameObject.GetComponentInChildren<Animator>().SetTrigger("Drink");
+                }
             }
         }
     }
@@ -837,6 +849,7 @@ public class Player : MonoBehaviour
     {
         rb.velocity = Vector2.zero;
         rb.AddForce(force, ForceMode2D.Impulse);
+        playSound.Play(4, 1, 1);
     }
 
     public void Die()

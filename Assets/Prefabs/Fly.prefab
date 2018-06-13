@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4967757074819348}
   - component: {fileID: 212163317654201174}
   - component: {fileID: 95293770485394612}
+  - component: {fileID: 114978896194745880}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -39,6 +40,7 @@ GameObject:
   - component: {fileID: 114963489866622350}
   - component: {fileID: 50531392404460482}
   - component: {fileID: 70158377594308134}
+  - component: {fileID: 82328628735136268}
   m_Layer: 14
   m_Name: Fly
   m_TagString: Fly
@@ -108,6 +110,98 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.76, y: 0.5}
   m_Direction: 1
+--- !u!82 &82328628735136268
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1340972425983826}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: ff01872ab42a1bd42854c878ce81715f, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 0.574
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 3.94174
+  MaxDistance: 9.323648
+  Pan2D: 0
+  rolloffMode: 1
+  BypassEffects: 1
+  BypassListenerEffects: 1
+  BypassReverbZones: 1
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0.2
+      value: 1
+      inSlope: -5.0019917
+      outSlope: -5.0019917
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 0.4
+      value: 0.5
+      inSlope: -1.2504979
+      outSlope: -1.2504979
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 0.78168947
+      value: 0.14755249
+      inSlope: -0.92720276
+      outSlope: -0.92720276
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: -0.20007975
+      outSlope: -0.20007975
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0.33333334
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0.66568756
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!95 &95293770485394612
 Animator:
   serializedVersion: 3
@@ -138,11 +232,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 1
   patrolTime: 5
-  followPlayer: 1
+  followPlayer: 0
   enemyTarget: {fileID: 0}
   dead: 0
   drinkObject: {fileID: 1806201473817202, guid: 22d17a55bf329c84d9364c986497fed6,
     type: 2}
+--- !u!114 &114978896194745880
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1171132739852640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b142bf4b89266ac40855cb502c15a9b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BigPuke: {fileID: 0}
 --- !u!212 &212163317654201174
 SpriteRenderer:
   m_ObjectHideFlags: 1

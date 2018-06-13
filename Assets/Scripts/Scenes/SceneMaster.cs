@@ -54,18 +54,7 @@ public class SceneMaster : MonoBehaviour
     {
         counter -= Time.deltaTime;
 
-        if(oneTimeBool == false && counter < 4)
-        {
-            logo.FadeIn();
-            oneTimeBool = true;
-        }
-
-        if(counter <= 0 && !logo.Transparent)
-        {
-            logo.FadeOut();
-        }
-
-        if(counter <= 0 && logo.Transparent)
+        if(counter <= 0)
         {
             oneTimeBool = false;
             TitleState();
@@ -87,12 +76,25 @@ public class SceneMaster : MonoBehaviour
 
     void Gameplay()
     {
+        counter -= Time.deltaTime;
+
+        if (oneTimeBool == false)
+        {
+            blackScreen = GameObject.Find("BlackScreen").GetComponent<Fade>();
+            blackScreen.FadeOut();
+            oneTimeBool = true;
+        }
 
     }
 
     void Ending()
     {
+        counter -= Time.deltaTime;
 
+        if(counter <= 0)
+        {
+            SceneManager.LoadScene(3);
+        }
     }
 
     #endregion
@@ -126,6 +128,14 @@ public class SceneMaster : MonoBehaviour
     public void GameplayScreen()
     {
         SceneManager.LoadScene(2);
+    }
+
+    public void EndingScreen()
+    {
+        blackScreen = GameObject.Find("BlackScreen").GetComponent<Fade>();
+        blackScreen.FadeIn();
+        counter = 5;
+        EndingState();
     }
 
     public void CloseGame()

@@ -5,6 +5,12 @@ using UnityEngine;
 public class DrinkSprite : MonoBehaviour
 {
     public GameObject BigPuke;
+    PlaySound playSound;
+
+    void Start()
+    {
+        playSound = GameObject.Find("GameMaster").GetComponent<PlaySound>();
+    }
 
     public void Drinked()
     {
@@ -19,5 +25,10 @@ public class DrinkSprite : MonoBehaviour
     public void SpawnBigPuke()
     {
         BigPuke.SetActive(true);
+    }
+
+    public void Tss()
+    {
+        playSound.PlayPitch(0);
     }
 }

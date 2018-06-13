@@ -9,6 +9,7 @@ public class Puke : MonoBehaviour
     [SerializeField]
     public int pukeCharge;
     Player player;
+    PlaySound playSound;
     [SerializeField] GameObject drinkObject;
 
     void Start ()
@@ -18,8 +19,10 @@ public class Puke : MonoBehaviour
         Vector2 dir = worldPoint - (Vector2)this.transform.localPosition;
         dir.Normalize();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        playSound = GameObject.Find("GameMaster").GetComponent<PlaySound>();
 
-        if(player.powered)
+
+        if (player.powered)
         {
             if (speed.x >= 10) speed.x = 10;
             if (speed.y >= 8) speed.y = 8;
@@ -72,6 +75,7 @@ public class Puke : MonoBehaviour
                     drinkObject.GetComponent<Drink>().Charge = pukeCharge;
                     Instantiate(drinkObject, new Vector2(this.transform.position.x, this.transform.position.y + 0.05f), Quaternion.Euler(0, 0, 180));
                 }
+                playSound.Play(5, 1, Random.Range(0.8f, 1.2f));
                 Destroy(this.gameObject);
             }
 

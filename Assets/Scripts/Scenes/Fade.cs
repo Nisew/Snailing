@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Fade : MonoBehaviour
 {
@@ -12,11 +13,11 @@ public class Fade : MonoBehaviour
     bool transparent;
     bool fadeIn;
     bool fadeOut;
-    SpriteRenderer sprite;
+    Image sprite;
 
     void Start ()
     {
-        sprite = GetComponent<SpriteRenderer>();
+        sprite = GetComponent<Image>();
         fadeCounter = fadeTime;
 
         if (startOpaque)
